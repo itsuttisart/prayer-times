@@ -3,176 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islamic Prayer Times - Modern UI</title>
+    <title>Islamic Prayer Pro - Supreme UI</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary-dark: #064439;
-            --accent-green: #1a5d52;
-            --soft-white: #f8faf9;
-            --text-gray: #757575;
+            --primary: #064439;
+            --accent: #2e7d32;
             --now-red: #ff3b30;
+            --bg-body: #f0f2f1;
+            --card-white: #ffffff;
+            --text-main: #2d3436;
         }
 
         body {
             font-family: 'Kanit', sans-serif;
-            background-color: #eef2f1;
+            background-color: var(--bg-body);
             margin: 0;
             display: flex;
             justify-content: center;
-            color: var(--primary-dark);
+            color: var(--text-main);
         }
 
-        .app-container {
+        .app-shell {
             width: 100%;
             max-width: 430px;
             background: #fff;
             min-height: 100vh;
-            position: relative;
-            box-shadow: 0 0 50px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
         }
 
-        /* Top Bar */
-        .top-bar {
-            padding: 30px 25px 10px;
+        /* --- Header Section --- */
+        .header-top {
+            padding: 30px 25px 15px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
         }
 
-        .header-info h2 { margin: 0; font-size: 1.2rem; font-weight: 600; }
-        .header-info .city-label { font-size: 0.9rem; color: var(--accent-green); display: flex; align-items: center; gap: 5px; }
+        .date-section { text-align: left; }
+        .hijri-top { font-family: 'Amiri', serif; font-size: 2.2rem; color: var(--primary); margin: 0; line-height: 1.1; }
+        .gregorian-sub { font-size: 1rem; color: #636e72; margin-top: 5px; font-weight: 300; }
 
-        .time-now { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+        .time-section { text-align: right; }
+        .live-clock { font-size: 1.4rem; font-weight: 600; color: var(--primary); margin-bottom: 2px; }
+        .pin-location { font-size: 0.85rem; color: var(--accent); display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
 
-        /* Main Prayer Card (Now) */
-        .main-card {
-            margin: 20px 25px;
-            background: #fff;
-            border-radius: 24px;
+        /* --- Active Prayer Card (The "Now") --- */
+        .active-card {
+            margin: 15px 25px;
+            background: var(--card-white);
+            border-radius: 28px;
             padding: 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #f0f0f0;
+            border: 1px solid #f1f3f2;
+            position: relative;
+            overflow: hidden;
         }
 
-        .prayer-info-now .now-badge {
+        .active-card::before {
+            content: "NOW";
+            position: absolute;
+            top: 15px; left: 15px;
             background: var(--now-red);
             color: white;
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 0.7rem;
+            padding: 2px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
             font-weight: bold;
-            display: inline-block;
-            margin-bottom: 8px;
         }
 
-        .prayer-name-ar { font-family: 'Amiri', serif; font-size: 1.8rem; margin: 0; }
-        .prayer-time-big { font-size: 2.8rem; font-weight: bold; margin: 5px 0; letter-spacing: -1px; }
-        .countdown { color: var(--now-red); font-size: 0.9rem; }
+        .now-label-ar { font-family: 'Amiri', serif; font-size: 2.5rem; margin: 0; color: var(--primary); }
+        .now-time-val { font-size: 3.5rem; font-weight: 700; color: var(--primary); letter-spacing: -2px; margin: 5px 0; }
+        .rem-time { color: var(--now-red); font-size: 0.95rem; font-weight: 400; }
+        .now-icon-box { font-size: 4.5rem; color: #ffca28; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
 
-        .moon-icon { font-size: 3.5rem; color: #fbc02d; opacity: 0.8; }
-
-        /* Grid Prayer List */
+        /* --- Prayer Grid (2x3) --- */
         .prayer-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
             padding: 0 25px;
-            margin-bottom: 25px;
+            margin-top: 10px;
         }
 
-        .grid-item {
-            background: var(--primary-dark);
-            color: #fff;
+        .grid-card {
+            background: var(--primary);
+            color: white;
             border-radius: 20px;
-            padding: 18px 5px;
+            padding: 15px 10px;
             text-align: center;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(6, 68, 57, 0.15);
         }
 
-        .grid-item.active { background: #fff; color: var(--primary-dark); border: 2px solid var(--primary-dark); }
-        .grid-item i { font-size: 1.2rem; margin-bottom: 8px; display: block; }
-        .grid-item .ar-label { font-family: 'Amiri', serif; font-size: 1.1rem; display: block; }
-        .grid-item .time-label { font-size: 0.95rem; font-weight: 600; }
+        .grid-card i { font-size: 1.4rem; margin-bottom: 8px; display: block; }
+        .grid-card .ar-name { font-family: 'Amiri', serif; font-size: 1.2rem; display: block; line-height: 1; margin-bottom: 5px; }
+        .grid-card .time-val { font-size: 0.95rem; font-weight: 500; opacity: 0.9; }
 
-        /* Bottom Section: Hijri Calendar */
-        .bottom-calendar {
-            margin-top: auto;
-            background: #f4f8f7;
-            padding: 40px 20px;
+        /* --- Calendar Widget --- */
+        .calendar-widget {
+            margin: 25px;
+            padding: 15px;
+            background: #f8faf9;
+            border-radius: 20px;
+        }
+
+        .cal-week {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
             text-align: center;
-            border-radius: 40px 40px 0 0;
+            gap: 5px;
         }
 
-        .hijri-big { font-family: 'Amiri', serif; font-size: 2.5rem; color: var(--primary-dark); margin-bottom: 5px; }
-        .gregorian-small { font-size: 1rem; color: var(--text-gray); }
+        .day-header { font-size: 0.75rem; color: #95a5a6; margin-bottom: 8px; }
+        .day-num {
+            height: 35px; display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; font-size: 0.9rem; font-weight: 500;
+        }
+        .day-num.today { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(6, 68, 57, 0.3); }
 
-        .city-select-box { margin: 20px auto; width: 80%; }
-        select {
-            width: 100%; padding: 10px; border-radius: 12px; border: 1px solid #ddd;
-            font-family: 'Kanit'; outline: none; background: #fff;
+        /* --- Select City --- */
+        .city-box { margin: 0 25px 20px; }
+        .city-box select {
+            width: 100%; padding: 12px 20px; border-radius: 15px; border: 1px solid #e0e0e0;
+            font-family: 'Kanit'; font-size: 1rem; outline: none; background: #fff;
         }
 
-        /* Admin Styles */
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #fff; z-index: 9999; padding: 30px; overflow-y: auto; box-sizing: border-box;
+        /* --- Admin PIN Overlay --- */
+        .pin-overlay {
+            display: none; position: fixed; inset: 0; background: white; z-index: 1000;
+            flex-direction: column; align-items: center; justify-content: center;
         }
 
-        .pin-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 250px; margin: 30px auto;
+        .pin-dots { display: flex; gap: 20px; margin: 30px 0; }
+        .dot { width: 15px; height: 15px; border: 2px solid var(--primary); border-radius: 50%; }
+        .dot.filled { background: var(--primary); }
+
+        .numpad {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
         }
 
-        .pin-btn {
-            height: 60px; border-radius: 50%; border: 1px solid #ddd; background: #f9f9f9;
-            font-size: 1.5rem; font-family: 'Kanit'; cursor: pointer;
+        .num-btn {
+            width: 70px; height: 70px; border-radius: 50%; border: 1px solid #eee;
+            background: #fdfdfd; font-size: 1.5rem; font-family: 'Kanit'; cursor: pointer;
         }
 
-        .admin-section { background: #f9f9f9; padding: 15px; border-radius: 15px; margin-bottom: 20px; }
-        .btn-green { background: var(--primary-dark); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        /* --- Admin Dashboard --- */
+        .admin-dash {
+            display: none; position: fixed; inset: 0; background: white; z-index: 1001; padding: 25px; overflow-y: auto;
+        }
+        .admin-card { background: #f9f9f9; padding: 20px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #eee; }
+        input, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #ddd; font-family: 'Kanit'; box-sizing: border-box; }
+        .save-btn { background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; }
+
+        .admin-trigger { text-align: center; font-size: 0.7rem; color: #ddd; cursor: pointer; padding: 15px; }
         
-        .admin-footer { text-align: center; font-size: 0.6rem; color: #ccc; cursor: pointer; padding: 10px; }
+        /* Icon Colors */
+        .icon-im { color: #5c6bc0; } .icon-fa { color: #42a5f5; } .icon-sh { color: #ffa726; }
+        .icon-dh { color: #fbc02d; } .icon-as { color: #8d6e63; } .icon-ma { color: #ef5350; } .icon-is { color: #7e57c2; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <div class="top-bar">
-        <div class="header-info">
-            <h2 id="thDate">22 กุมภาพันธ์ 2569</h2>
-            <div class="city-label"><i class="fa-solid fa-location-dot"></i> <span id="currentCityLabel">ยะลา</span></div>
+<div class="app-shell">
+    <div class="header-top">
+        <div class="date-section">
+            <h1 class="hijri-top" id="topHijri">٤ رمضان ١٤٤٧</h1>
+            <div class="gregorian-sub" id="topGregorian">22 กุมภาพันธ์ 2569</div>
         </div>
-        <div class="time-now">
-            <span id="liveClock">00:00:00</span>
-            <i class="fa-regular fa-bell"></i>
+        <div class="time-section">
+            <div class="live-clock" id="liveClock">10:08:26</div>
+            <div class="pin-location">
+                <i class="fa-solid fa-location-dot"></i>
+                <span id="locLabel">ยะลา</span>
+            </div>
         </div>
     </div>
 
-    <div class="main-card">
-        <div class="prayer-info-now">
-            <div class="now-badge">NOW</div>
-            <p id="nowNameAr" class="prayer-name-ar">عشاء</p>
-            <div id="nowTime" class="prayer-time-big">19:45</div>
-            <div class="countdown" id="countdown">เหลือเวลาอีก 2 ชม. 13 นาที</div>
+    <div class="active-card">
+        <div class="active-info">
+            <p class="now-label-ar" id="nowArName">شروق</p>
+            <div class="now-time-val" id="nowTimeVal">06:28</div>
+            <div class="rem-time" id="countdown">เหลือเวลาอีก 2 ชม. 13 นาที</div>
         </div>
-        <div class="moon-icon">
-            <i id="mainIcon" class="fa-solid fa-moon"></i>
+        <div class="now-icon-box">
+            <i id="nowIcon" class="fa-solid fa-sun-cloud icon-sh"></i>
         </div>
     </div>
 
     <div class="prayer-grid" id="prayerGrid">
         </div>
 
-    <div class="city-select-box">
-        <select id="citySelect" onchange="changeCity()">
+    <div class="city-box">
+        <select id="citySelect" onchange="updateLocation()">
             <option value="ยะลา">ยะลา</option>
             <option value="นครศรีธรรมราช">นครศรีธรรมราช / พัทลุง</option>
             <option value="จะนะ">จะนะ / เทพา</option>
@@ -184,262 +216,236 @@
         </select>
     </div>
 
-    <div class="bottom-calendar">
-        <div class="hijri-big" id="hijriBig">٤ رمضان ١٤٤٧</div>
-        <div class="gregorian-small" id="gregorianSmall">22 February 2026</div>
+    <div class="calendar-widget">
+        <div class="cal-week">
+            <div class="day-header">อา</div><div class="day-header">จ</div><div class="day-header">อ</div>
+            <div class="day-header">พ</div><div class="day-header">พฤ</div><div class="day-header">ศ</div><div class="day-header">ส</div>
+        </div>
+        <div class="cal-week" id="calDays">
+            </div>
     </div>
 
-    <div class="admin-footer" onclick="openAdmin()">ADMIN MODE</div>
+    <div class="admin-trigger" onclick="openPin()">ADMIN MODE</div>
 </div>
 
-<div id="adminModal" class="modal">
-    <div id="pinScreen">
-        <h2 style="text-align: center;">กรอก PIN 4 หลัก</h2>
-        <div style="text-align:center; font-size: 2rem; letter-spacing: 15px;" id="pinDots">____</div>
-        <div class="pin-grid">
-            <button class="pin-btn" onclick="pressPin('1')">1</button>
-            <button class="pin-btn" onclick="pressPin('2')">2</button>
-            <button class="pin-btn" onclick="pressPin('3')">3</button>
-            <button class="pin-btn" onclick="pressPin('4')">4</button>
-            <button class="pin-btn" onclick="pressPin('5')">5</button>
-            <button class="pin-btn" onclick="pressPin('6')">6</button>
-            <button class="pin-btn" onclick="pressPin('7')">7</button>
-            <button class="pin-btn" onclick="pressPin('8')">8</button>
-            <button class="pin-btn" onclick="pressPin('9')">9</button>
-            <button class="pin-btn" onclick="clearPin()">C</button>
-            <button class="pin-btn" onclick="pressPin('0')">0</button>
-            <button class="pin-btn" onclick="closeAdmin()">X</button>
-        </div>
+<div class="pin-overlay" id="pinOverlay">
+    <h2>Enter PIN</h2>
+    <div class="pin-dots">
+        <div class="dot" id="d1"></div><div class="dot" id="d2"></div>
+        <div class="dot" id="d3"></div><div class="dot" id="d4"></div>
+    </div>
+    <div class="numpad">
+        <button class="num-btn" onclick="pressKey('1')">1</button>
+        <button class="num-btn" onclick="pressKey('2')">2</button>
+        <button class="num-btn" onclick="pressKey('3')">3</button>
+        <button class="num-btn" onclick="pressKey('4')">4</button>
+        <button class="num-btn" onclick="pressKey('5')">5</button>
+        <button class="num-btn" onclick="pressKey('6')">6</button>
+        <button class="num-btn" onclick="pressKey('7')">7</button>
+        <button class="num-btn" onclick="pressKey('8')">8</button>
+        <button class="num-btn" onclick="pressKey('9')">9</button>
+        <button class="num-btn" style="border:none; background:none;" onclick="closePin()">X</button>
+        <button class="num-btn" onclick="pressKey('0')">0</button>
+        <button class="num-btn" style="border:none; background:none;" onclick="clearPin()"><i class="fa-solid fa-delete-left"></i></button>
+    </div>
+</div>
+
+<div class="admin-dash" id="adminDash">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3>Admin Console</h3>
+        <button onclick="logoutAdmin()" style="width:auto; padding:5px 15px;">Logout</button>
     </div>
 
-    <div id="adminPanel" style="display:none;">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3>ตั้งค่าผู้ดูแลระบบ</h3>
-            <button onclick="closeAdmin()">ปิด</button>
+    <div class="admin-card">
+        <h4>เพิ่มช่วงเวลาละหมาด (Multiple Ranges)</h4>
+        <label>จากวันที่:</label> <input type="date" id="sDate">
+        <label>ถึงวันที่:</label> <input type="date" id="eDate">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
+            <input type="time" id="v-im" placeholder="إمساك"> <input type="time" id="v-fa" placeholder="صبح">
+            <input type="time" id="v-sh" placeholder="شروق"> <input type="time" id="v-dh" placeholder="ظهر">
+            <input type="time" id="v-as" placeholder="عصر"> <input type="time" id="v-ma" placeholder="มัฆริบ">
+            <input type="time" id="v-is" placeholder="อีซา">
         </div>
+        <button class="save-btn" onclick="addRange()">บันทึกช่วงเวลานี้</button>
+        <div id="rangeList" style="font-size: 0.7rem; margin-top:10px;"></div>
+    </div>
 
-        <div class="admin-section">
-            <h4>1. เพิ่มช่วงเวลาละหมาด (ยะลา)</h4>
-            <label>เริ่มวันที่:</label> <input type="date" id="sDate">
-            <label>ถึงวันที่:</label> <input type="date" id="eDate">
-            <hr>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                <input type="time" id="t-im" placeholder="إمساك"> 
-                <input type="time" id="t-fa" placeholder="صبح">
-                <input type="time" id="t-sh" placeholder="شروق">
-                <input type="time" id="t-dh" placeholder="ظهر">
-                <input type="time" id="t-as" placeholder="عصر">
-                <input type="time" id="t-ma" placeholder="مغرب">
-                <input type="time" id="t-is" placeholder="عشاء">
-            </div>
-            <button class="btn-green" onclick="saveRange()">+ เพิ่มช่วงเวลานี้</button>
-            <div id="rangeList" style="font-size: 0.7rem; margin-top:10px; max-height:100px; overflow:auto;"></div>
-        </div>
-
-        <div class="admin-section">
-            <h4>2. ตั้งค่าปฏิทินอิสลาม</h4>
-            <select id="hijriMonthSelect">
-                <option value="1">محرم</option><option value="2">صفر</option>
-                <option value="3">ربيع الأول</option><option value="4">ربيع الثاني</option>
-                <option value="5">جمادي الأول</option><option value="6">جمادي الآخر</option>
-                <option value="7">رجب</option><option value="8">شعبان</option>
-                <option value="9">رمضان</option><option value="10">شوال</option>
-                <option value="11">ذو القعدة</option><option value="12">ذو الحجة</option>
-            </select>
-            <label>วันที่ 1 ตรงกับสากลวันที่:</label>
-            <input type="date" id="hijriRefDate">
-            <label>เดือนนี้มีกี่วัน:</label>
-            <select id="hijriDays">
-                <option value="29">29 วัน</option>
-                <option value="30">30 วัน</option>
-            </select>
-            <button class="btn-green" onclick="saveHijri()">บันทึกปฏิทิน</button>
-        </div>
+    <div class="admin-card">
+        <h4>ตั้งค่าวันเริ่มเดือนอิสลาม</h4>
+        <select id="hMonth">
+            <option value="9">Ramadan</option>
+            <option value="10">Shawwal</option>
+        </select>
+        <label>วันที่ 1 ตรงกับสากล:</label>
+        <input type="date" id="hRef">
+        <label>จำนวนวันในเดือนนี้:</label>
+        <select id="hDays"><option value="29">29 วัน</option><option value="30">30 วัน</option></select>
+        <button class="save-btn" onclick="saveHijri()">บันทึกปฏิทิน</button>
     </div>
 </div>
 
 <script>
-    // Configuration & Data
-    const PIN_REQUIRED = "1785";
-    let currentPin = "";
+    // System Config
+    const PIN_KEY = "1785";
+    let inputPin = "";
     
-    // Database (Local Storage)
-    let db = JSON.parse(localStorage.getItem('prayerAppDB')) || {
-        ranges: [], // {start: 'date', end: 'date', times: {}}
-        hijri: { month: 9, refDate: '2026-03-01', totalDays: 30 }
+    let db = JSON.parse(localStorage.getItem('prayerProDB')) || {
+        ranges: [],
+        hijri: { month: 9, refDate: '2026-03-01', total: 30 }
     };
 
     const offsets = { 'ยะลา': 0, 'นครศรีธรรมราช': 3, 'จะนะ': 1, 'สตูล': 2, 'ตรัง': 4, 'ปัตตานี': -2, 'นราธิวาส': -4, 'สุไหงโกลก': -5 };
-    const prayerMeta = [
-        {id:'im', ar:'إمساك', icon:'fa-clock'},
-        {id:'fa', ar:'صبح', icon:'fa-sun-haze'},
-        {id:'sh', ar:'شروق', icon:'fa-sun-rising'},
-        {id:'dh', ar:'ظهر', icon:'fa-sun'},
-        {id:'as', ar:'عصر', icon:'fa-cloud-sun'},
-        {id:'ma', ar:'مغرب', icon:'fa-moon-stars'},
-        {id:'is', ar:'عشاء', icon:'fa-moon'}
+    const meta = [
+        {id:'im', ar:'إمساك', ic:'fa-clock-eleven', cls:'icon-im'},
+        {id:'fa', ar:'صبح', ic:'fa-sun-haze', cls:'icon-fa'},
+        {id:'sh', ar:'شروก', ic:'fa-sun-cloud', cls:'icon-sh'},
+        {id:'dh', ar:'ظهر', ic:'fa-sun-bright', cls:'icon-dh'},
+        {id:'as', ar:'عصر', ic:'fa-cloud-sun', cls:'icon-as'},
+        {id:'ma', ar:'مغرب', ic:'fa-moon-stars', cls:'icon-ma'},
+        {id:'is', ar:'عشاء', ic:'fa-moon-cloud', cls:'icon-is'}
     ];
 
-    const arNumbers = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+    const arNums = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
     const arMonths = ["","محرم","صفر","ربيع الأول","ربيع الثاني","جمادي الأول","جمادي الآخر","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
 
-    // App Logic
     function init() {
-        const savedCity = localStorage.getItem('pinnedCity') || 'ยะลา';
-        document.getElementById('citySelect').value = savedCity;
-        document.getElementById('currentCityLabel').innerText = savedCity;
+        const saved = localStorage.getItem('userCity') || 'ยะลา';
+        document.getElementById('citySelect').value = saved;
+        document.getElementById('locLabel').innerText = saved;
         
-        updateClock();
-        setInterval(updateClock, 1000);
-        renderView();
+        setInterval(tick, 1000);
+        render();
+        renderCalendar();
     }
 
-    function updateClock() {
+    function tick() {
         const now = new Date();
         document.getElementById('liveClock').innerText = now.toLocaleTimeString('th-TH');
-        document.getElementById('thDate').innerText = now.toLocaleDateString('th-TH', {day:'numeric', month:'long', year:'numeric'});
-        document.getElementById('gregorianSmall').innerText = now.toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
-        
-        if(now.getSeconds() === 0) renderView(); // Re-render every minute for "Now" logic
+        if(now.getSeconds() === 0) render();
     }
 
-    function renderView() {
-        const today = new Date().toISOString().split('T')[0];
-        const city = document.getElementById('citySelect').value;
-        const offset = offsets[city];
-        
-        // Find matching range
-        let activeRange = db.ranges.find(r => today >= r.start && today <= r.end);
-        let times = activeRange ? activeRange.times : {im:'04:55', fa:'05:10', sh:'06:28', dh:'12:30', as:'15:45', ma:'18:35', is:'19:45'};
-
-        // 1. Calculate Current "Now" Prayer
+    function render() {
         const now = new Date();
-        const currentTimeInMin = now.getHours() * 60 + now.getMinutes();
-        
-        let currentPrayerIdx = 0;
-        const processedTimes = prayerMeta.map(p => {
+        const todayStr = now.toISOString().split('T')[0];
+        const city = document.getElementById('citySelect').value;
+        const off = offsets[city];
+
+        // 1. Get Times
+        let activeR = db.ranges.find(r => todayStr >= r.start && todayStr <= r.end);
+        let times = activeR ? activeR.v : {im:'04:55', fa:'05:10', sh:'06:28', dh:'12:30', as:'15:45', ma:'18:35', is:'19:45'};
+
+        const curMin = now.getHours() * 60 + now.getMinutes();
+        const proc = meta.map(p => {
             const [h, m] = times[p.id].split(':').map(Number);
-            const totalMin = h * 60 + m + offset;
-            return { ...p, totalMin, timeStr: formatTime(totalMin) };
+            const total = h * 60 + m + off;
+            return { ...p, total, str: format(total) };
         });
 
-        for(let i = processedTimes.length - 1; i >= 0; i--) {
-            if(currentTimeInMin >= processedTimes[i].totalMin) {
-                currentPrayerIdx = i;
-                break;
-            }
+        // 2. Determine "Now"
+        let curIdx = 0;
+        for(let i = proc.length - 1; i >= 0; i--) {
+            if(curMin >= proc[i].total) { curIdx = i; break; }
         }
+        const nowP = proc[curIdx];
 
-        // 2. Update Header Card
-        const cur = processedTimes[currentPrayerIdx];
-        document.getElementById('nowNameAr').innerText = cur.ar;
-        document.getElementById('nowTime').innerText = cur.timeStr;
-        
-        // 3. Update Grid (4 items - according to UI style)
-        // Show next 4 or specific ones. Let's show Fa, Dh, As, Ma in grid.
-        const gridIds = ['fa', 'dh', 'as', 'ma'];
+        // 3. Update Big Card
+        document.getElementById('nowArName').innerText = nowP.ar;
+        document.getElementById('nowTimeVal').innerText = nowP.str;
+        document.getElementById('nowIcon').className = `fa-solid ${nowP.ic} ${nowP.cls}`;
+
+        // 4. Update Grid (Show other 6)
         const grid = document.getElementById('prayerGrid');
         grid.innerHTML = '';
-        gridIds.forEach(id => {
-            const p = processedTimes.find(x => x.id === id);
-            const isActive = (cur.id === id);
-            grid.innerHTML += `
-                <div class="grid-item ${isActive ? 'active' : ''}">
-                    <i class="fa-solid ${getIcon(id)}"></i>
-                    <span class="ar-label">${p.ar}</span>
-                    <span class="time-label">${p.timeStr}</span>
-                </div>
-            `;
+        proc.forEach((p, idx) => {
+            if(idx !== curIdx) {
+                grid.innerHTML += `
+                    <div class="grid-card">
+                        <i class="fa-solid ${p.ic} ${p.cls}"></i>
+                        <span class="ar-name">${p.ar}</span>
+                        <span class="time-val">${p.str}</span>
+                    </div>
+                `;
+            }
         });
 
-        // 4. Update Hijri
-        const refDate = new Date(db.hijri.refDate);
-        const dayDiff = Math.floor((new Date() - refDate) / (1000*60*60*24)) + 1;
-        if(dayDiff > 0 && dayDiff <= db.hijri.totalDays) {
-            const arDay = String(dayDiff).split('').map(n => arNumbers[n]).join('');
-            document.getElementById('hijriBig').innerText = `${arDay} ${arMonths[db.hijri.month]} ١٤٤٧`;
+        // 5. Update Hijri Top
+        const hRef = new Date(db.hijri.refDate);
+        const diff = Math.floor((now - hRef) / 86400000) + 1;
+        if(diff > 0 && diff <= db.hijri.total) {
+            const dayAr = String(diff).split('').map(n => arNums[n]).join('');
+            document.getElementById('topHijri').innerText = `${dayAr} ${arMonths[db.hijri.month]} ١٤٤٧`;
+        }
+        document.getElementById('topGregorian').innerText = now.toLocaleDateString('th-TH', {day:'numeric', month:'long', year:'numeric'});
+    }
+
+    function renderCalendar() {
+        const now = new Date();
+        const start = new Date(now);
+        start.setDate(now.getDate() - now.getDay());
+        
+        const container = document.getElementById('calDays');
+        container.innerHTML = '';
+        for(let i=0; i<7; i++) {
+            const d = new Date(start); d.setDate(start.getDate() + i);
+            const isToday = d.toDateString() === now.toDateString();
+            container.innerHTML += `<div class="day-num ${isToday?'today':''}">${d.getDate()}</div>`;
         }
     }
 
-    function formatTime(totalMin) {
-        const h = Math.floor(totalMin / 60);
-        const m = totalMin % 60;
-        return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+    function format(m) {
+        return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
     }
 
-    function getIcon(id) {
-        const icons = {fa:'fa-sun-haze', dh:'fa-sun', as:'fa-cloud-sun', ma:'fa-moon-stars'};
-        return icons[id] || 'fa-clock';
+    function updateLocation() {
+        const c = document.getElementById('citySelect').value;
+        localStorage.setItem('userCity', c);
+        document.getElementById('locLabel').innerText = c;
+        render();
     }
 
-    function changeCity() {
-        const city = document.getElementById('citySelect').value;
-        localStorage.setItem('pinnedCity', city);
-        document.getElementById('currentCityLabel').innerText = city;
-        renderView();
-    }
-
-    // Admin Functions
-    function openAdmin() { document.getElementById('adminModal').style.display = 'block'; }
-    function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; clearPin(); }
-
-    function pressPin(n) {
-        if(currentPin.length < 4) {
-            currentPin += n;
-            document.getElementById('pinDots').innerText = '*'.repeat(currentPin.length).padEnd(4, '_');
-        }
-        if(currentPin === PIN_REQUIRED) {
-            document.getElementById('pinScreen').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-            renderRangeList();
-        } else if(currentPin.length === 4) {
-            alert("PIN ผิด"); clearPin();
+    // PIN Logic
+    function openPin() { document.getElementById('pinOverlay').style.display = 'flex'; }
+    function closePin() { document.getElementById('pinOverlay').style.display = 'none'; clearPin(); }
+    
+    function pressKey(n) {
+        if(inputPin.length < 4) {
+            inputPin += n;
+            document.getElementById(`d${inputPin.length}`).classList.add('filled');
+            if(inputPin === PIN_KEY) {
+                setTimeout(() => {
+                    document.getElementById('pinOverlay').style.display = 'none';
+                    document.getElementById('adminDash').style.display = 'block';
+                    clearPin();
+                }, 200);
+            } else if(inputPin.length === 4) {
+                setTimeout(clearPin, 300);
+            }
         }
     }
+    function clearPin() {
+        inputPin = "";
+        for(let i=1; i<=4; i++) document.getElementById(`d${i}`).classList.remove('filled');
+    }
 
-    function clearPin() { currentPin = ""; document.getElementById('pinDots').innerText = "____"; }
-
-    function saveRange() {
+    // Admin Logic
+    function addRange() {
         const range = {
             start: document.getElementById('sDate').value,
             end: document.getElementById('eDate').value,
-            times: {
-                im: document.getElementById('t-im').value,
-                fa: document.getElementById('t-fa').value,
-                sh: document.getElementById('t-sh').value,
-                dh: document.getElementById('t-dh').value,
-                as: document.getElementById('t-as').value,
-                ma: document.getElementById('t-ma').value,
-                is: document.getElementById('t-is').value
+            v: {
+                im: document.getElementById('v-im').value, fa: document.getElementById('v-fa').value,
+                sh: document.getElementById('v-sh').value, dh: document.getElementById('v-dh').value,
+                as: document.getElementById('v-as').value, ma: document.getElementById('v-ma').value,
+                is: document.getElementById('v-is').value
             }
         };
         db.ranges.push(range);
-        localStorage.setItem('prayerAppDB', JSON.stringify(db));
-        renderRangeList();
-        alert("บันทึกช่วงเวลาแล้ว");
-        renderView();
+        localStorage.setItem('prayerProDB', JSON.stringify(db));
+        alert("Saved!"); render();
     }
 
-    function renderRangeList() {
-        const list = document.getElementById('rangeList');
-        list.innerHTML = db.ranges.map((r, i) => `<div>[${i+1}] ${r.start} - ${r.end} <span onclick="deleteRange(${i})" style="color:red">ลบ</span></div>`).join('');
-    }
-    
-    function deleteRange(i) {
-        db.ranges.splice(i, 1);
-        localStorage.setItem('prayerAppDB', JSON.stringify(db));
-        renderRangeList();
-    }
-
-    function saveHijri() {
-        db.hijri = {
-            month: parseInt(document.getElementById('hijriMonthSelect').value),
-            refDate: document.getElementById('hijriRefDate').value,
-            totalDays: parseInt(document.getElementById('hijriDays').value)
-        };
-        localStorage.setItem('prayerAppDB', JSON.stringify(db));
-        alert("บันทึกปฏิทินแล้ว");
-        renderView();
+    function logoutAdmin() {
+        document.getElementById('adminDash').style.display = 'none';
     }
 
     window.onload = init;
