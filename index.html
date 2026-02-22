@@ -3,241 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prayer Times - Thailand</title>
+    <title>เวลาละหมาด - Southern Thailand</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap');
+        
         :root {
-            --primary-green: #2D5A27;
-            --light-green: #E8F5E9;
-            --accent-green: #4CAF50;
+            --bg-gray: #f4f7f6;
+            --blue-header: #007bff;
             --white: #ffffff;
+            --text-dark: #333;
         }
 
         body {
             font-family: 'Sarabun', sans-serif;
-            background-color: #f4f4f4;
+            background-color: var(--bg-gray);
             margin: 0;
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            padding: 20px;
         }
 
-        .phone-mockup {
-            width: 380px;
+        .main-card {
+            width: 100%;
+            max-width: 450px;
             background: var(--white);
-            border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             overflow: hidden;
-            position: relative;
-            border: 8px solid #333;
+            text-align: center;
         }
 
-        /* Header ดีไซน์ตามรูป */
-        .header {
+        .top-banner {
+            background-color: var(--blue-header);
+            color: white;
+            padding: 15px;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .info-bar {
+            padding: 15px;
+            background: #fdfdfd;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .selection-area {
             padding: 20px;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .logo-area { font-weight: bold; color: var(--primary-green); line-height: 1; }
-        .location-info { text-align: right; font-size: 0.8rem; color: #666; }
-
-        .hero-section {
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .hero-text h1 {
-            color: var(--primary-green);
-            font-size: 2.5rem;
-            margin: 0;
-            letter-spacing: 2px;
+        select {
+            padding: 8px 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-family: 'Sarabun';
+            font-size: 1rem;
+            min-width: 200px;
         }
 
-        /* รายการเวลาละหมาด */
-        .prayer-container {
-            padding: 20px;
+        .prayer-list {
+            padding: 0 20px 20px;
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .prayer-card {
-            background: linear-gradient(to right, var(--primary-green), var(--accent-green));
-            color: white;
-            padding: 15px 20px;
-            border-radius: 12px;
+        .prayer-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(45, 90, 39, 0.2);
+            padding: 18px 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid #f0f0f0;
         }
 
-        .prayer-info { display: flex; align-items: center; gap: 15px; }
-        .prayer-info i { font-size: 1.2rem; opacity: 0.8; }
-        .prayer-name { font-weight: bold; font-size: 1.1rem; }
-        .prayer-time { font-size: 1.1rem; font-weight: 300; }
-
-        /* มัสยิดตกแต่งด้านขวา */
-        .mosque-bg {
-            position: absolute;
-            right: -20px;
-            bottom: 0;
-            width: 200px;
-            opacity: 0.1;
-            pointer-events: none;
+        .prayer-name {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
         }
 
-        /* ปุ่ม Admin */
-        .admin-btn {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            font-size: 0.7rem;
-            color: #ccc;
-            background: none;
-            border: none;
-            cursor: pointer;
+        .prayer-name i { font-size: 1.4rem; width: 25px; text-align: center; }
+        .fajr i { color: #5c6bc0; }
+        .sunrise i { color: #ec407a; }
+        .dhuhr i { color: #fbc02d; }
+        .asr i { color: #29b6f6; }
+        .maghrib i { color: #ef5350; }
+        .isha i { color: #3f51b5; }
+
+        .prayer-time { font-size: 1.5rem; font-weight: bold; }
+
+        /* สีพิเศษสำหรับเวลา Shurooq (ทางผ่าน) */
+        .sunrise-card { background: linear-gradient(to right, #ff758c, #ff7eb3); color: white; border: none; }
+        .sunrise-card .prayer-time { color: white; }
+
+        .footer-msg {
+            font-size: 0.8rem;
+            color: #888;
+            padding: 15px;
+            background: #fafafa;
         }
 
-        /* Modal ตั้งค่า */
-        #adminModal {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.95);
-            z-index: 100;
-            padding: 20px;
-            box-sizing: border-box;
-            color: #333;
-        }
-
-        .active-now {
-            border: 3px solid gold;
-            transform: scale(1.02);
-        }
-
-        .btn-green {
-            background: var(--primary-green);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            width: 100%;
-            margin-top: 10px;
+        /* Admin Styles */
+        .admin-trigger { font-size: 0.7rem; color: #eee; cursor: pointer; padding: 10px; }
+        .overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.98); z-index: 1000;
+            flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;
         }
     </style>
 </head>
 <body>
 
-<div class="phone-mockup">
-    <div class="header">
-        <div class="logo-area">LOGO<br>HERE</div>
-        <div class="location-info">
-            <div id="cityDisplay">CITY NAME</div>
-            <div id="dateDisplay">MONTH 00, 202X</div>
-        </div>
+<div class="main-card">
+    <div class="top-banner">أوقات الصلاة</div>
+    
+    <div class="info-bar">
+        <span>📅 <span id="dateText">-- --- ----</span></span>
+        <span>⏰ <span id="clockText">00:00:00</span></span>
     </div>
 
-    <div class="hero-section">
-        <div class="hero-text">
-            <h1>PRAYER<br>TIMES</h1>
-        </div>
-        <div style="font-size: 4rem; color: var(--primary-green); opacity: 0.2;">
-            <i class="fas fa-mosque"></i>
-        </div>
+    <div class="selection-area">
+        <label>เลือกจังหวัด:</label>
+        <select id="citySelect" onchange="updateView()">
+            <option value="ยะลา">ยะลา</option>
+            <option value="นครศรีธรรมราช">นครศรีธรรมราช / พัทลุง</option>
+            <option value="จะนะ">จะนะ / เทพา</option>
+            <option value="สตูล">สตูล</option>
+            <option value="ตรัง">ตรัง</option>
+            <option value="ปัตตานี">ปัตตานี</option>
+            <option value="นราธิวาส">นราธิวาส</option>
+            <option value="สุไหงโกลก">สุไหงโกลก</option>
+        </select>
     </div>
 
-    <div class="prayer-container" id="prayerList">
+    <div class="prayer-list" id="prayerDisplay">
         </div>
 
-    <button class="admin-btn" onclick="openAdmin()">Admin Login</button>
-
-    <div id="adminModal">
-        <h3>ตั้งค่าเวลาละหมาด (Manual)</h3>
-        <div id="adminInputs"></div>
-        <button class="btn-green" onclick="saveAdminSettings()">บันทึกข้อมูล</button>
-        <button class="btn-green" style="background:#666" onclick="closeAdmin()">ปิด</button>
-        <p style="font-size: 0.7rem; margin-top: 10px;">* ข้อมูลจะถูกบันทึกไว้ในเครื่องนี้เท่านั้น</p>
-    </div>
-
-    <audio id="adhanAudio"><source src="adhan.mp3" type="audio/mpeg"></audio>
+    <div class="footer-msg" id="footerMsg">ตารางเวลานี้ใช้เฉพาะจังหวัดยะลา</div>
+    
+    <div class="admin-trigger" onclick="openLogin()">ADMIN SETTINGS</div>
 </div>
 
-<script>
-    const prayerKeys = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-    const prayerTh = { Fajr: 'FAJR', Dhuhr: 'DHUHR', Asr: 'ASR', Maghrib: 'MAGHRIB', Isha: 'ISHA' };
-    const prayerIcons = { Fajr: 'fa-sun', Dhuhr: 'fa-certificate', Asr: 'fa-cloud-sun', Maghrib: 'fa-moon', Isha: 'fa-star' };
+<div id="loginOverlay" class="overlay">
+    <h2>Admin Access</h2>
+    <input type="password" id="adminPass" placeholder="รหัสผ่าน" style="width:200px; padding:10px; margin:10px;">
+    <button onclick="checkLogin()" style="padding:10px 20px; background:var(--blue-header); color:white; border:none; border-radius:5px;">ตกลง</button>
+    <button onclick="closeOverlay()" style="background:none; border:none; color:gray; margin-top:10px;">ยกเลิก</button>
+</div>
 
-    let prayerTimes = JSON.parse(localStorage.getItem('customPrayers')) || {
-        Fajr: "05:10", Dhuhr: "12:30", Asr: "15:45", Maghrib: "18:35", Isha: "19:45"
+<audio id="adhanAudio"><source src="adhan.mp3" type="audio/mpeg"></audio>
+
+<script>
+    const cityOffsets = {
+        'ยะลา': 0, 'นครศรีธรรมราช': 3, 'จะนะ': 1, 'สตูล': 2, 'ตรัง': 4, 'ปัตตานี': -2, 'นราธิวาส': -4, 'สุไหงโกลก': -5
     };
 
-    function renderDisplay() {
-        const container = document.getElementById('prayerList');
-        container.innerHTML = '';
-        const now = new Date();
-        const currentHM = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    const footerTexts = {
+        'ยะลา': 'ตารางเวลานี้ใช้เฉพาะจังหวัดยะลา',
+        'นครศรีธรรมราช': 'ระบบจะเพิ่ม 3 นาที ที่นครศรีฯ / พัทลุง',
+        'จะนะ': 'ระบบจะเพิ่ม 1 นาที ที่จะนะ / เทพา',
+        'สตูล': 'ระบบจะเพิ่ม 2 นาที ที่สตูล',
+        'ตรัง': 'ระบบจะเพิ่ม 4 นาที ที่ตรัง',
+        'ปัตตานี': 'ระบบจะลบ 2 นาที ที่ปัตตานี',
+        'นราธิวาส': 'ระบบจะลบ 4 นาที ที่นราธิวาส',
+        'สุไหงโกลก': 'ระบบจะลบ 5 นาที ที่สุไหงโกลก'
+    };
 
-        prayerKeys.forEach(key => {
-            const isNow = currentHM === prayerTimes[key];
+    // ฐานเวลาจริง (ยะลา) - Admin สามารถมาแก้ตรงนี้ได้
+    let baseTimes = JSON.parse(localStorage.getItem('basePrayerTimes')) || {
+        Fajr: "05:16", Sunrise: "06:28", Dhuhr: "12:31", Asr: "15:51", Maghrib: "18:32", Isha: "19:40"
+    };
+
+    function addMinutes(timeStr, mins) {
+        let [h, m] = timeStr.split(':').map(Number);
+        let date = new Date();
+        date.setHours(h, m + mins, 0);
+        return date.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', hour12: false });
+    }
+
+    function updateView() {
+        const city = document.getElementById('citySelect').value;
+        const offset = cityOffsets[city];
+        const container = document.getElementById('prayerDisplay');
+        const footer = document.getElementById('footerMsg');
+        
+        footer.innerText = footerTexts[city];
+        container.innerHTML = '';
+
+        const items = [
+            { key: 'Fajr', name: 'فجر', icon: 'fa-moon', cls: 'fajr' },
+            { key: 'Sunrise', name: 'شروق', icon: 'fa-cloud-sun', cls: 'sunrise-card' },
+            { key: 'Dhuhr', name: 'ظهر', icon: 'fa-sun', cls: 'dhuhr' },
+            { key: 'Asr', name: 'عصر', icon: 'fa-cloud', cls: 'asr' },
+            { key: 'Maghrib', name: 'مغرب', icon: 'fa-cloud-moon', cls: 'maghrib' },
+            { key: 'Isha', name: 'عشاء', icon: 'fa-moon', cls: 'isha' }
+        ];
+
+        items.forEach(item => {
+            const finalTime = addMinutes(baseTimes[item.key], offset);
             container.innerHTML += `
-                <div class="prayer-card ${isNow ? 'active-now' : ''}">
-                    <div class="prayer-info">
-                        <i class="fas ${prayerIcons[key]}"></i>
-                        <span class="prayer-name">${prayerTh[key]}</span>
+                <div class="prayer-item ${item.cls}">
+                    <div class="prayer-name">
+                        <i class="fas ${item.icon}"></i>
+                        <span>${item.name}</span>
                     </div>
-                    <div class="prayer-time">${prayerTimes[key]} AM/PM</div>
+                    <div class="prayer-time">${finalTime}</div>
                 </div>
             `;
-            if (isNow) playAdhan();
         });
-
-        document.getElementById('dateDisplay').innerText = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     }
 
-    // ระบบ Admin
-    function openAdmin() {
-        const pass = prompt("กรุณาใส่รหัสผ่านแอดมิน:");
-        if (pass === "1234") { // รหัสผ่านเริ่มต้น
-            document.getElementById('adminModal').style.display = 'block';
-            const inputContainer = document.getElementById('adminInputs');
-            inputContainer.innerHTML = '';
-            prayerKeys.forEach(key => {
-                inputContainer.innerHTML += `
-                    <div style="margin-bottom:10px">
-                        ${key}: <input type="time" id="edit-${key}" value="${prayerTimes[key]}">
-                    </div>
-                `;
-            });
-        } else {
-            alert("รหัสผ่านไม่ถูกต้อง");
-        }
+    function updateClock() {
+        const now = new Date();
+        document.getElementById('clockText').innerText = now.toLocaleTimeString('th-TH');
+        document.getElementById('dateText').innerText = now.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
     }
 
-    function saveAdminSettings() {
-        prayerKeys.forEach(key => {
-            prayerTimes[key] = document.getElementById(`edit-${key}`).value;
-        });
-        localStorage.setItem('customPrayers', JSON.stringify(prayerTimes));
-        alert("บันทึกสำเร็จ!");
-        closeAdmin();
-        renderDisplay();
+    // --- ระบบ Admin พื้นฐาน ---
+    function openLogin() { document.getElementById('loginOverlay').style.display = 'flex'; }
+    function closeOverlay() { document.getElementById('loginOverlay').style.display = 'none'; }
+    function checkLogin() {
+        if(document.getElementById('adminPass').value === "1234") {
+            let newFajr = prompt("ตั้งเวลา Fajr ใหม่ (ยะลา):", baseTimes.Fajr);
+            if(newFajr) {
+                baseTimes.Fajr = newFajr;
+                localStorage.setItem('basePrayerTimes', JSON.stringify(baseTimes));
+                updateView();
+            }
+            closeOverlay();
+        } else { alert("รหัสผิด"); }
     }
 
-    function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
-    
-    function playAdhan() {
-        const audio = document.getElementById('adhanAudio');
-        audio.play().catch(e => console.log("รอ User คลิกหน้าเว็บก่อนเสียงถึงจะดัง"));
-    }
-
-    setInterval(renderDisplay, 30000); // อัปเดตทุก 30 วินาที
-    renderDisplay();
+    setInterval(updateClock, 1000);
+    updateView();
 </script>
 
 </body>
