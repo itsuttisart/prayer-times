@@ -6,7 +6,7 @@
     <title>เวลาละหมาด-أوقات الصلاة</title>
     
     <!-- Fonts & Libraries -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -17,15 +17,12 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        kanit: ['Kanit', 'sans-serif'],
                         amiri: ['Amiri', 'serif'],
+                        kanit: ['Kanit', 'sans-serif'],
                     },
                     colors: {
                         primary: '#064439',
                         accent: '#2e7d32',
-                    },
-                    boxShadow: {
-                        'glow': '0 0 25px rgba(46, 125, 50, 0.4)',
                     }
                 }
             }
@@ -33,77 +30,72 @@
     </script>
     
     <style>
-        body { @apply font-kanit bg-[#f0f2f1] dark:bg-[#0f172a] transition-colors duration-300; }
-        .app-container { @apply w-full max-w-[430px] min-h-screen bg-white dark:bg-[#1e293b] mx-auto shadow-2xl flex flex-col relative overflow-hidden; }
-        .font-amiri { font-family: 'Amiri', serif; }
-        .font-kanit { font-family: 'Kanit', sans-serif; }
+        body { font-family: 'Kanit', sans-serif; background-color: #f0f2f1; margin: 0; display: flex; justify-content: center; }
+        .app-shell { width: 100%; max-width: 430px; background: #fff; min-height: 100vh; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.1); }
+        .font-amiri { font-family: 'Amiri', serif !important; }
+        .font-kanit { font-family: 'Kanit', sans-serif !important; }
         
-        /* Hijri Calendar Grid */
-        .hijri-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-        .hijri-cell { @apply aspect-square flex flex-col items-center justify-center rounded-xl border transition-all; }
-        .light .hijri-cell { @apply bg-gray-50 border-gray-100; }
-        .dark .hijri-cell { @apply bg-slate-800 border-slate-700; }
-        .hijri-cell.active { @apply bg-primary text-white border-primary shadow-lg scale-105; }
+        /* Glow Effect for Active Card */
+        .active-glow {
+            box-shadow: 0 0 20px 5px rgba(6, 68, 57, 0.2);
+            border: 2px solid rgba(6, 68, 57, 0.3);
+        }
 
         /* Animations */
-        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 15px rgba(6, 68, 57, 0.2); } 50% { box-shadow: 0 0 30px rgba(6, 68, 57, 0.5); } }
-        .active-glow { animation: pulse-glow 3s infinite; }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        @keyframes pulse-soft { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.9; } }
+        .animate-pulse-soft { animation: pulse-soft 2s infinite; }
+
+        /* Monthly Calendar Grid */
+        .hijri-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+        .hijri-cell { aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; border: 1px solid #f1f5f9; background: #f8fafc; }
+        .hijri-cell.active { background: #064439; color: white; border-color: #064439; box-shadow: 0 4px 12px rgba(6, 68, 57, 0.3); }
     </style>
 </head>
-<body class="light">
+<body class="font-kanit">
 
-<div class="app-container">
-    <!-- Top Bar -->
-    <div class="flex justify-between items-center px-6 pt-8 pb-2">
-        <button onclick="toggleTheme()" class="p-2.5 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-yellow-400 active:scale-90 transition-all">
-            <i data-lucide="sun" id="themeIcon"></i>
-        </button>
+<div class="app-shell">
+    <!-- Header Section -->
+    <div class="flex justify-between items-start p-6 pt-10 pb-4">
+        <div class="flex flex-col">
+            <h1 class="font-amiri text-3xl text-[#064439] leading-tight" id="topHijri">--</h1>
+            <div class="text-xs font-light text-gray-400 mt-1 font-kanit" id="topGregorian">--</div>
+        </div>
         <div class="text-right">
-            <div class="text-2xl font-bold text-primary dark:text-emerald-400 tracking-tight font-kanit" id="liveClock">00:00:00</div>
-            <div class="flex items-center justify-end gap-1 text-accent dark:text-emerald-500 text-xs mt-1 font-kanit">
+            <div class="text-2xl font-bold text-[#064439] tracking-tight font-kanit" id="liveClock">00:00:00</div>
+            <div class="flex items-center justify-end gap-1 text-[#2e7d32] text-xs mt-1 font-kanit">
                 <i data-lucide="map-pin" class="w-3 h-3"></i>
                 <span id="locLabel">ยะลา</span>
             </div>
         </div>
     </div>
 
-    <!-- Header Date -->
-    <div class="px-6 py-4">
-        <h1 class="font-amiri text-3xl text-primary dark:text-emerald-400 leading-tight" id="topHijri">--</h1>
-        <div class="text-xs font-light text-gray-400 dark:text-slate-400 mt-1 font-kanit" id="topGregorian">--</div>
-    </div>
-
     <!-- Active Prayer Card (NOW) -->
-    <div class="mx-6 my-4 bg-white dark:bg-slate-800 rounded-[35px] p-8 shadow-xl border border-gray-50 dark:border-slate-700 relative overflow-hidden active-glow">
-        <div class="absolute top-6 right-8 bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full tracking-wider shadow-lg shadow-red-500/30 font-kanit">
+    <div class="mx-6 my-4 bg-white rounded-[32px] p-8 shadow-xl relative overflow-hidden active-glow">
+        <div class="absolute top-6 right-8 bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full tracking-wider animate-pulse-soft font-kanit">
             NOW
         </div>
         
         <div class="flex justify-between items-center">
             <div class="flex flex-col">
-                <p class="font-amiri text-6xl text-primary dark:text-emerald-400 mb-2" id="nowArName">--</p>
-                <div class="text-6xl font-bold text-primary dark:text-emerald-400 tracking-tighter font-kanit" id="nowTimeVal">00:00</div>
-                <div class="mt-6 inline-flex items-center px-4 py-2 bg-red-50 dark:bg-red-900/20 rounded-full border border-red-100 dark:border-red-900/30">
-                    <p class="text-red-500 dark:text-red-400 text-[11px] font-semibold font-kanit" id="countdown">กำลังคำนวณ...</p>
+                <p class="font-amiri text-5xl text-[#064439] mb-2" id="nowArName">--</p>
+                <div class="text-6xl font-bold text-[#064439] tracking-tighter font-kanit" id="nowTimeVal">00:00</div>
+                <div class="mt-4 inline-flex items-center px-4 py-1.5 bg-red-50 rounded-full border border-red-100">
+                    <p class="text-red-500 text-[11px] font-medium font-kanit" id="countdown">คำนวณเวลา...</p>
                 </div>
             </div>
-            <div class="p-6 rounded-full bg-gray-50 dark:bg-slate-700">
+            <div class="p-6 rounded-full bg-gray-50" id="nowIconContainer">
                 <i id="nowIcon" data-lucide="clock" class="text-gray-400 w-16 h-16"></i>
             </div>
         </div>
     </div>
 
     <!-- Prayer Grid (2x3) -->
-    <div class="grid grid-cols-3 gap-3 px-6 mt-4" id="prayerGrid"></div>
+    <div class="grid grid-cols-3 gap-3 px-6 mt-2" id="prayerGrid"></div>
 
     <!-- City Selector -->
     <div class="px-6 mt-8">
         <div class="relative">
-            <select id="citySelect" onchange="updateLocation()" class="w-full appearance-none bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl px-6 py-4 text-gray-700 dark:text-slate-200 font-medium font-kanit cursor-pointer focus:outline-none">
+            <select id="citySelect" onchange="updateLocation()" class="w-full appearance-none bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 text-gray-700 font-medium font-kanit cursor-pointer focus:outline-none">
                 <option value="ยะลา">ยะลา</option>
                 <option value="นครศรีธรรมราช">นครศรีธรรมราช / พัทลุง</option>
                 <option value="จะนะ">จะนะ / เทพา</option>
@@ -120,114 +112,112 @@
     </div>
 
     <!-- Monthly Hijri Calendar -->
-    <div class="mx-6 mt-8 mb-12 p-6 bg-white dark:bg-slate-800 rounded-[35px] shadow-sm border border-gray-100 dark:border-slate-700">
+    <div class="mx-6 mt-8 mb-10 p-6 bg-white rounded-[32px] shadow-sm border border-gray-100">
         <div class="flex justify-between items-center mb-6 px-2">
             <div>
-                <h3 class="font-bold text-primary dark:text-emerald-400 text-lg font-kanit" id="calHijriMonth">--</h3>
-                <p class="text-[10px] text-gray-400 dark:text-slate-500 font-kanit" id="calGregorianRange">--</p>
+                <h3 class="font-bold text-[#064439] text-lg font-kanit" id="calHijriMonth">--</h3>
+                <p class="text-[10px] text-gray-400 font-kanit" id="calGregorianRange">--</p>
             </div>
-            <div class="text-[10px] font-bold text-gray-300 dark:text-slate-600 uppercase tracking-widest font-kanit">HIJRI CALENDAR</div>
+            <div class="text-[9px] font-bold text-gray-300 uppercase tracking-widest font-kanit">HIJRI CALENDAR</div>
         </div>
-        <div class="grid grid-cols-7 gap-2 mb-4 font-kanit">
-            <div class="text-[10px] font-bold text-red-400 text-center">อา</div>
-            <div class="text-[10px] font-bold text-gray-400 text-center">จ</div>
-            <div class="text-[10px] font-bold text-gray-400 text-center">อ</div>
-            <div class="text-[10px] font-bold text-gray-400 text-center">พ</div>
-            <div class="text-[10px] font-bold text-gray-400 text-center">พฤ</div>
-            <div class="text-[10px] font-bold text-gray-400 text-center">ศ</div>
-            <div class="text-[10px] font-bold text-gray-400 text-center">ส</div>
+        <div class="grid grid-cols-7 gap-2 mb-3">
+            <div class="text-[10px] font-bold text-red-400 text-center font-kanit">อา</div>
+            <div class="text-[10px] font-bold text-gray-400 text-center font-kanit">จ</div>
+            <div class="text-[10px] font-bold text-gray-400 text-center font-kanit">อ</div>
+            <div class="text-[10px] font-bold text-gray-400 text-center font-kanit">พ</div>
+            <div class="text-[10px] font-bold text-gray-400 text-center font-kanit">พฤ</div>
+            <div class="text-[10px] font-bold text-gray-400 text-center font-kanit">ศ</div>
+            <div class="text-[10px] font-bold text-gray-400 text-center font-kanit">ส</div>
         </div>
         <div class="hijri-grid" id="hijriGrid"></div>
     </div>
 
     <!-- Admin Trigger -->
-    <div class="mt-auto py-8 text-[10px] font-bold text-gray-300 dark:text-slate-600 tracking-[0.4em] hover:text-primary transition-colors uppercase text-center cursor-pointer font-kanit" onclick="openPin()">
+    <div class="mt-auto py-8 text-[10px] font-bold text-gray-200 tracking-[0.4em] hover:text-gray-400 transition-colors uppercase text-center cursor-pointer font-kanit" onclick="openPin()">
         Admin Console
     </div>
 </div>
 
 <!-- PIN Overlay -->
-<div id="pinOverlay" class="fixed inset-0 bg-white dark:bg-slate-900 z-[100] hidden flex flex-col items-center justify-center p-8">
+<div id="pinOverlay" class="fixed inset-0 bg-white z-[100] hidden flex flex-col items-center justify-center p-8">
     <div class="absolute top-8 right-8 p-2 text-gray-400 cursor-pointer" onclick="closePin()"><i data-lucide="x"></i></div>
-    <h2 class="text-2xl font-bold text-primary dark:text-emerald-400 mb-10 font-kanit">กรอกรหัสผ่าน PIN</h2>
+    <h2 class="text-2xl font-bold text-[#064439] mb-10 font-kanit">กรอกรหัสผ่าน PIN</h2>
     <div class="flex gap-6 mb-12">
-        <div class="w-4 h-4 rounded-full border-2 border-primary" id="dot1"></div>
-        <div class="w-4 h-4 rounded-full border-2 border-primary" id="dot2"></div>
-        <div class="w-4 h-4 rounded-full border-2 border-primary" id="dot3"></div>
-        <div class="w-4 h-4 rounded-full border-2 border-primary" id="dot4"></div>
+        <div class="w-4 h-4 rounded-full border-2 border-[#064439]" id="dot1"></div>
+        <div class="w-4 h-4 rounded-full border-2 border-[#064439]" id="dot2"></div>
+        <div class="w-4 h-4 rounded-full border-2 border-[#064439]" id="dot3"></div>
+        <div class="w-4 h-4 rounded-full border-2 border-[#064439]" id="dot4"></div>
     </div>
-    <div class="grid grid-cols-3 gap-6 font-kanit">
-        <button class="w-20 h-20 rounded-full bg-gray-50 dark:bg-slate-800 text-2xl font-semibold active:scale-90 transition-all" onclick="pressKey('1')">1</button>
-        <button class="w-20 h-20 rounded-full bg-gray-50 dark:bg-slate-800 text-2xl font-semibold active:scale-90 transition-all" onclick="pressKey('2')">2</button>
-        <button class="w-20 h-20 rounded-full bg-gray-50 dark:bg-slate-800 text-2xl font-semibold active:scale-90 transition-all" onclick="pressKey('3')">3</button>
-        <button class="w-20 h-20 rounded-full bg-gray-50 dark:bg-slate-800 text-2xl font-semibold active:scale-90 transition-all" onclick="pressKey('4')">4</button>
-        <button class="w-20 h-20 rounded-full bg-gray-50 dark:bg-slate-800 text-2xl font-semibold active:scale-90 transition-all" onclick="pressKey('5')">5</button>
-        <button class="w-20 h-20 rounded-full bg-gray-50 dark:bg-slate-800 text-2xl font-semibold active:scale-90 transition-all" onclick="pressKey('6')">6</button>
-        <button class="w-20 h-20 rounded-full bg-gray-50 dark:bg-slate-800 text-2xl font-semibold active:scale-90 transition-all" onclick="pressKey('7')">7</button>
-        <button class="w-20 h-20 rounded-full bg-gray-50 dark:bg-slate-800 text-2xl font-semibold active:scale-90 transition-all" onclick="pressKey('8')">8</button>
-        <button class="w-20 h-20 rounded-full bg-gray-50 dark:bg-slate-800 text-2xl font-semibold active:scale-90 transition-all" onclick="pressKey('9')">9</button>
+    <div class="grid grid-cols-3 gap-6">
+        <button class="w-20 h-20 rounded-full bg-gray-50 text-2xl font-semibold text-[#064439] font-kanit" onclick="pressKey('1')">1</button>
+        <button class="w-20 h-20 rounded-full bg-gray-50 text-2xl font-semibold text-[#064439] font-kanit" onclick="pressKey('2')">2</button>
+        <button class="w-20 h-20 rounded-full bg-gray-50 text-2xl font-semibold text-[#064439] font-kanit" onclick="pressKey('3')">3</button>
+        <button class="w-20 h-20 rounded-full bg-gray-50 text-2xl font-semibold text-[#064439] font-kanit" onclick="pressKey('4')">4</button>
+        <button class="w-20 h-20 rounded-full bg-gray-50 text-2xl font-semibold text-[#064439] font-kanit" onclick="pressKey('5')">5</button>
+        <button class="w-20 h-20 rounded-full bg-gray-50 text-2xl font-semibold text-[#064439] font-kanit" onclick="pressKey('6')">6</button>
+        <button class="w-20 h-20 rounded-full bg-gray-50 text-2xl font-semibold text-[#064439] font-kanit" onclick="pressKey('7')">7</button>
+        <button class="w-20 h-20 rounded-full bg-gray-50 text-2xl font-semibold text-[#064439] font-kanit" onclick="pressKey('8')">8</button>
+        <button class="w-20 h-20 rounded-full bg-gray-50 text-2xl font-semibold text-[#064439] font-kanit" onclick="pressKey('9')">9</button>
         <div></div>
-        <button class="w-20 h-20 rounded-full bg-gray-50 dark:bg-slate-800 text-2xl font-semibold active:scale-90 transition-all" onclick="pressKey('0')">0</button>
+        <button class="w-20 h-20 rounded-full bg-gray-50 text-2xl font-semibold text-[#064439] font-kanit" onclick="pressKey('0')">0</button>
         <button class="w-20 h-20 rounded-full text-gray-400 flex items-center justify-center" onclick="clearPin()"><i data-lucide="delete"></i></button>
     </div>
 </div>
 
 <!-- Admin Dashboard -->
-<div id="adminDash" class="fixed inset-0 bg-[#f8faf9] dark:bg-slate-900 z-[110] hidden overflow-y-auto font-kanit">
-    <div class="max-w-[430px] mx-auto p-8">
-        <div class="flex justify-between items-center mb-10">
-            <h3 class="text-2xl font-bold text-primary dark:text-emerald-400">Admin Console</h3>
-            <button onclick="logoutAdmin()" class="bg-red-50 dark:bg-red-900/20 text-red-500 px-6 py-2 rounded-xl text-sm font-bold">Logout</button>
-        </div>
+<div id="adminDash" class="fixed inset-0 bg-[#f8faf9] z-[110] hidden overflow-y-auto p-8">
+    <div class="flex justify-between items-center mb-10">
+        <h3 class="text-2xl font-bold text-[#064439] font-kanit">Admin Console</h3>
+        <button onclick="logoutAdmin()" class="bg-red-50 text-red-500 px-6 py-2 rounded-xl text-sm font-bold font-kanit">Logout</button>
+    </div>
 
-        <!-- Range Setting -->
-        <div class="bg-white dark:bg-slate-800 p-8 rounded-[35px] shadow-sm border border-gray-100 dark:border-slate-700 mb-8">
-            <h4 class="font-bold text-gray-800 dark:text-slate-200 mb-6 flex items-center gap-2"><i data-lucide="calendar-plus" class="w-5 h-5 text-primary"></i> เพิ่มช่วงเวลาละหมาด</h4>
-            <div class="grid grid-cols-2 gap-4 mb-6">
-                <div><label class="text-[10px] font-bold text-gray-400 uppercase">เริ่มวันที่</label><input type="date" id="rangeStart" class="w-full p-3 rounded-xl border dark:bg-slate-700 dark:border-slate-600"></div>
-                <div><label class="text-[10px] font-bold text-gray-400 uppercase">ถึงวันที่</label><input type="date" id="rangeEnd" class="w-full p-3 rounded-xl border dark:bg-slate-700 dark:border-slate-600"></div>
-            </div>
-            <div class="grid grid-cols-2 gap-4 mb-8">
-                <div><label class="text-[10px] font-bold text-gray-400 uppercase font-amiri text-lg">إمساك</label><input type="time" id="t-im" class="w-full p-3 rounded-xl border dark:bg-slate-700 dark:border-slate-600"></div>
-                <div><label class="text-[10px] font-bold text-gray-400 uppercase font-amiri text-lg">صبح</label><input type="time" id="t-fa" class="w-full p-3 rounded-xl border dark:bg-slate-700 dark:border-slate-600"></div>
-                <div><label class="text-[10px] font-bold text-gray-400 uppercase font-amiri text-lg">شروق</label><input type="time" id="t-sh" class="w-full p-3 rounded-xl border dark:bg-slate-700 dark:border-slate-600"></div>
-                <div><label class="text-[10px] font-bold text-gray-400 uppercase font-amiri text-lg">ظهر</label><input type="time" id="t-dh" class="w-full p-3 rounded-xl border dark:bg-slate-700 dark:border-slate-600"></div>
-                <div><label class="text-[10px] font-bold text-gray-400 uppercase font-amiri text-lg">عصر</label><input type="time" id="t-as" class="w-full p-3 rounded-xl border dark:bg-slate-700 dark:border-slate-600"></div>
-                <div><label class="text-[10px] font-bold text-gray-400 uppercase font-amiri text-lg">مغرب</label><input type="time" id="t-ma" class="w-full p-3 rounded-xl border dark:bg-slate-700 dark:border-slate-600"></div>
-                <div class="col-span-2"><label class="text-[10px] font-bold text-gray-400 uppercase font-amiri text-lg">عشاء</label><input type="time" id="t-is" class="w-full p-3 rounded-xl border dark:bg-slate-700 dark:border-slate-600"></div>
-            </div>
-            <button onclick="saveRange()" class="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg active:scale-95 transition-all">บันทึกช่วงเวลานี้</button>
+    <!-- Range Setting -->
+    <div class="bg-white p-8 rounded-[32px] shadow-sm border border-gray-100 mb-8">
+        <h4 class="font-bold text-gray-800 mb-6 flex items-center gap-2 font-kanit"><i data-lucide="calendar-plus" class="w-5 h-5 text-[#064439]"></i> เพิ่มช่วงเวลาละหมาด</h4>
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <div><label class="text-[10px] font-bold text-gray-400 uppercase font-kanit">เริ่มวันที่</label><input type="date" id="rangeStart" class="w-full p-3 rounded-xl border border-gray-200 outline-none font-kanit"></div>
+            <div><label class="text-[10px] font-bold text-gray-400 uppercase font-kanit">ถึงวันที่</label><input type="date" id="rangeEnd" class="w-full p-3 rounded-xl border border-gray-200 outline-none font-kanit"></div>
         </div>
-
-        <!-- Range List -->
-        <div class="bg-white dark:bg-slate-800 p-8 rounded-[35px] shadow-sm border border-gray-100 dark:border-slate-700 mb-8">
-            <h4 class="font-bold text-gray-800 dark:text-slate-200 mb-6">รายการช่วงเวลาที่บันทึกไว้</h4>
-            <div id="rangeList" class="space-y-3"></div>
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <div><label class="text-[10px] font-bold text-gray-400 uppercase font-amiri">إمساك</label><input type="time" id="t-im" class="w-full p-3 rounded-xl border border-gray-200 outline-none font-kanit"></div>
+            <div><label class="text-[10px] font-bold text-gray-400 uppercase font-amiri">صبح</label><input type="time" id="t-fa" class="w-full p-3 rounded-xl border border-gray-200 outline-none font-kanit"></div>
+            <div><label class="text-[10px] font-bold text-gray-400 uppercase font-amiri">شروق</label><input type="time" id="t-sh" class="w-full p-3 rounded-xl border border-gray-200 outline-none font-kanit"></div>
+            <div><label class="text-[10px] font-bold text-gray-400 uppercase font-amiri">ظهر</label><input type="time" id="t-dh" class="w-full p-3 rounded-xl border border-gray-200 outline-none font-kanit"></div>
+            <div><label class="text-[10px] font-bold text-gray-400 uppercase font-amiri">عصر</label><input type="time" id="t-as" class="w-full p-3 rounded-xl border border-gray-200 outline-none font-kanit"></div>
+            <div><label class="text-[10px] font-bold text-gray-400 uppercase font-amiri">مغرب</label><input type="time" id="t-ma" class="w-full p-3 rounded-xl border border-gray-200 outline-none font-kanit"></div>
+            <div class="col-span-2"><label class="text-[10px] font-bold text-gray-400 uppercase font-amiri">عشاء</label><input type="time" id="t-is" class="w-full p-3 rounded-xl border border-gray-200 outline-none font-kanit"></div>
         </div>
+        <button onclick="saveRange()" class="w-full py-4 rounded-2xl bg-[#064439] text-white font-bold shadow-lg font-kanit">บันทึกช่วงเวลานี้</button>
+    </div>
 
-        <!-- Hijri Setting -->
-        <div class="bg-white dark:bg-slate-800 p-8 rounded-[35px] shadow-sm border border-gray-100 dark:border-slate-700 mb-12">
-            <h4 class="font-bold text-gray-800 dark:text-slate-200 mb-6 flex items-center gap-2"><i data-lucide="moon-star" class="w-5 h-5 text-accent"></i> ตั้งค่าปฏิทินฮิจเราะห์</h4>
-            <div class="space-y-6">
-                <div>
-                    <label class="text-[10px] font-bold text-gray-400 uppercase">เลือกเดือนอิสลาม</label>
-                    <select id="hMonth" class="w-full p-3 rounded-xl border dark:bg-slate-700 dark:border-slate-600 font-amiri text-xl">
-                        <option value="1">1. محرم</option><option value="2">2. صفر</option><option value="3">3. ربيع الأول</option>
-                        <option value="4">4. ربيع الثاني</option><option value="5">5. جمادي الأول</option><option value="6">6. جمادي الآخر</option>
-                        <option value="7">7. رجب</option><option value="8">8. شعبان</option><option value="9">9. رمضان</option>
-                        <option value="10">10. شوال</option><option value="11">11. ذو القعدة</option><option value="12">12. ذو الحجة</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="text-[10px] font-bold text-gray-400 uppercase">วันที่ 1 ตรงกับสากลวันที่</label>
-                    <input type="date" id="hRefDate" class="w-full p-3 rounded-xl border dark:bg-slate-700 dark:border-slate-600">
-                </div>
-                <div>
-                    <label class="text-[10px] font-bold text-gray-400 uppercase">จำนวนวันในเดือนนี้</label>
-                    <select id="hTotalDays" class="w-full p-3 rounded-xl border dark:bg-slate-700 dark:border-slate-600"><option value="29">29 วัน</option><option value="30">30 วัน</option></select>
-                </div>
-                <button onclick="saveHijri()" class="w-full py-4 bg-accent text-white rounded-2xl font-bold shadow-lg active:scale-95 transition-all">บันทึกปฏิทิน</button>
+    <!-- Range List -->
+    <div class="bg-white p-8 rounded-[32px] shadow-sm border border-gray-100 mb-8">
+        <h4 class="font-bold text-gray-800 mb-6 font-kanit">รายการช่วงเวลาที่บันทึกไว้</h4>
+        <div id="rangeList" class="space-y-3"></div>
+    </div>
+
+    <!-- Hijri Setting -->
+    <div class="bg-white p-8 rounded-[32px] shadow-sm border border-gray-100 mb-12">
+        <h4 class="font-bold text-gray-800 mb-6 flex items-center gap-2 font-kanit"><i data-lucide="moon-star" class="w-5 h-5 text-[#2e7d32]"></i> ตั้งค่าปฏิทินฮิจเราะห์</h4>
+        <div class="space-y-6">
+            <div>
+                <label class="text-[10px] font-bold text-gray-400 uppercase font-kanit">เลือกเดือนอิสลาม</label>
+                <select id="hMonth" class="w-full p-3 rounded-xl border border-gray-200 outline-none font-kanit">
+                    <option value="1">محرم</option><option value="2">صفر</option><option value="3">ربيع الأول</option>
+                    <option value="4">ربيع الثاني</option><option value="5">جمادي الأول</option><option value="6">جمادي الآخر</option>
+                    <option value="7">رجب</option><option value="8">شعبان</option><option value="9">رمضان</option>
+                    <option value="10">شوال</option><option value="11">ذو القعدة</option><option value="12">ذو الحجة</option>
+                </select>
             </div>
+            <div>
+                <label class="text-[10px] font-bold text-gray-400 uppercase font-kanit">วันที่ 1 ตรงกับสากลวันที่</label>
+                <input type="date" id="hRefDate" class="w-full p-3 rounded-xl border border-gray-200 outline-none font-kanit">
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-gray-400 uppercase font-kanit">จำนวนวันในเดือนนี้</label>
+                <select id="hTotalDays" class="w-full p-3 rounded-xl border border-gray-200 outline-none font-kanit"><option value="29">29 วัน</option><option value="30">30 วัน</option></select>
+            </div>
+            <button onclick="saveHijri()" class="w-full py-4 rounded-2xl bg-[#2e7d32] text-white font-bold shadow-lg font-kanit">บันทึกปฏิทิน</button>
         </div>
     </div>
 </div>
@@ -237,31 +227,27 @@
     const PIN_CODE = "1785";
     const OFFSETS = { 'ยะลา': 0, 'นครศรีธรรมราช': 3, 'จะนะ': 1, 'สตูล': 2, 'ตรัง': 4, 'ปัตตานี': -2, 'นราธิวาส': -4, 'สุไหงโกลก': -5 };
     const PRAYER_META = [
-        { id: 'im', ar: 'إมساك', icon: 'clock', color: 'text-indigo-500', bg: 'bg-indigo-50 dark:bg-indigo-900/20' },
-        { id: 'fa', ar: 'صبح', icon: 'sunrise', color: 'text-blue-400', bg: 'bg-blue-50 dark:bg-blue-900/20' },
-        { id: 'sh', ar: 'ชروق', icon: 'sun-medium', color: 'text-orange-400', bg: 'bg-orange-50 dark:bg-orange-900/20' },
-        { id: 'dh', ar: 'ظهر', icon: 'sun', color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-900/20' },
-        { id: 'as', ar: 'عصر', icon: 'cloud-sun', color: 'text-amber-600', bg: 'bg-amber-50 dark:bg-amber-900/20' },
-        { id: 'ma', ar: 'مغرب', icon: 'moon-star', color: 'text-red-500', bg: 'bg-red-50 dark:bg-red-900/20' },
-        { id: 'is', ar: 'عشاء', icon: 'moon', color: 'text-purple-600', bg: 'bg-purple-50 dark:bg-purple-900/20' }
+        { id: 'im', ar: 'إمساك', icon: 'clock', color: 'text-indigo-500', bg: 'bg-indigo-50' },
+        { id: 'fa', ar: 'صبح', icon: 'sunrise', color: 'text-blue-400', bg: 'bg-blue-50' },
+        { id: 'sh', ar: 'شروق', icon: 'sun-medium', color: 'text-orange-400', bg: 'bg-orange-50' },
+        { id: 'dh', ar: 'ظهر', icon: 'sun', color: 'text-yellow-500', bg: 'bg-yellow-50' },
+        { id: 'as', ar: 'عصر', icon: 'cloud-sun', color: 'text-amber-600', bg: 'bg-amber-50' },
+        { id: 'ma', ar: 'مغرب', icon: 'moon-star', color: 'text-red-500', bg: 'bg-red-50' },
+        { id: 'is', ar: 'عشاء', icon: 'moon', color: 'text-purple-600', bg: 'bg-purple-50' }
     ];
     const AR_NUMS = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
     const AR_MONTHS = ["","محرم","صفر","ربيع الأول","ربيع الثاني","جمادي الأول","جمادي الآخر","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
     const TH_MONTHS = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
 
     // --- State ---
-    let db = JSON.parse(localStorage.getItem('prayerProDB_final')) || {
+    let db = JSON.parse(localStorage.getItem('prayerProDB_v4')) || {
         ranges: [],
         hijri: { month: 9, refDate: '2026-03-01', total: 30 }
     };
     let inputPin = "";
-    let isDark = localStorage.getItem('theme') === 'dark';
 
     // --- Core Functions ---
     function init() {
-        if(isDark) document.documentElement.classList.add('dark');
-        updateThemeUI();
-        
         const savedCity = localStorage.getItem('userCity') || 'ยะลา';
         document.getElementById('citySelect').value = savedCity;
         document.getElementById('locLabel').innerText = savedCity;
@@ -284,6 +270,7 @@
         const off = OFFSETS[city] || 0;
         const todayStr = now.toISOString().split('T')[0];
 
+        // 1. Get Active Range
         let activeRange = db.ranges.find(r => todayStr >= r.start && todayStr <= r.end);
         let baseTimes = activeRange ? activeRange.v : { im:'04:55', fa:'05:10', sh:'06:28', dh:'12:30', as:'15:45', ma:'18:35', is:'19:45' };
         
@@ -294,6 +281,7 @@
             return { ...p, total, str: formatTime(total) };
         });
 
+        // 2. Determine "NOW" and "NEXT"
         let curIdx = 0;
         for(let i = processed.length - 1; i >= 0; i--) {
             if(curMin >= processed[i].total) { curIdx = i; break; }
@@ -303,32 +291,36 @@
         window.nextPrayerTotal = window.nextPrayer.total;
         if (curIdx === processed.length - 1) window.nextPrayerTotal += 1440; 
 
-        // Update UI
+        // 3. Update UI
         document.getElementById('nowArName').innerText = active.ar;
         document.getElementById('nowTimeVal').innerText = active.str;
         document.getElementById('nowIconContainer').className = `p-6 rounded-full ${active.bg}`;
         document.getElementById('nowIcon').setAttribute('data-lucide', active.icon);
         document.getElementById('nowIcon').className = `${active.color} w-16 h-16`;
 
+        // 4. Update Grid
         const grid = document.getElementById('prayerGrid');
         grid.innerHTML = '';
         processed.forEach((p, idx) => {
             if(idx !== curIdx) {
                 grid.innerHTML += `
-                    <div class="bg-primary text-white rounded-[28px] p-6 flex flex-col items-center justify-center shadow-lg border border-white/5">
+                    <div class="bg-[#064439] text-white rounded-[24px] p-6 flex flex-col items-center justify-center shadow-lg border border-white/10">
                         <div class="mb-3 p-2 rounded-xl bg-white/10"><i data-lucide="${p.icon}" class="w-5 h-5 text-white"></i></div>
-                        <span class="font-amiri text-3xl leading-none mb-3">${p.ar}</span>
-                        <span class="text-lg font-bold font-kanit opacity-90">${p.str}</span>
+                        <span class="font-amiri text-2xl leading-none mb-3">${p.ar}</span>
+                        <span class="text-xl font-bold font-kanit">${p.str}</span>
                     </div>
                 `;
             }
         });
 
+        // 5. Hijri Date Top
         const hDate = calculateHijri(now);
         document.getElementById('topHijri').innerText = `${toArNum(hDate.day)} ${AR_MONTHS[hDate.month]} ١٤٤٧`;
         document.getElementById('topGregorian').innerText = now.toLocaleDateString('th-TH', { day:'numeric', month:'long', year:'numeric' });
 
+        // 6. Hijri Calendar
         renderHijriCalendar();
+        
         lucide.createIcons();
     }
 
@@ -337,30 +329,40 @@
         const now = new Date();
         const curSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
         const targetSec = window.nextPrayerTotal * 60;
+        
         let diff = targetSec - curSec;
         if (diff < 0) diff = 0;
+
         const h = Math.floor(diff / 3600);
         const m = Math.floor((diff % 3600) / 60);
         const s = diff % 60;
+        
         document.getElementById('countdown').innerText = `อีก ${h} ชม. ${m} นาที ${s} วิ จะเข้าเวลาถัดไป`;
     }
 
     function renderHijriCalendar() {
         const ref = new Date(db.hijri.refDate);
         const total = db.hijri.total;
-        document.getElementById('calHijriMonth').innerText = `เดือน ${AR_MONTHS[db.hijri.month]}`;
+        const monthAr = AR_MONTHS[db.hijri.month];
+        
+        document.getElementById('calHijriMonth').innerText = `เดือน ${monthAr}`;
+        
         const endDate = new Date(ref);
         endDate.setDate(ref.getDate() + total - 1);
-        document.getElementById('calGregorianRange').innerText = `${ref.getDate()} ${TH_MONTHS[ref.getMonth()]} - ${endDate.getDate()} ${TH_MONTHS[endDate.getMonth()]} ${endDate.getFullYear() + 543}`;
+        const rangeText = `${ref.getDate()} ${TH_MONTHS[ref.getMonth()]} - ${endDate.getDate()} ${TH_MONTHS[endDate.getMonth()]} ${endDate.getFullYear() + 543}`;
+        document.getElementById('calGregorianRange').innerText = rangeText;
 
         const grid = document.getElementById('hijriGrid');
         grid.innerHTML = '';
+
         const startDay = ref.getDay();
         for(let i=0; i<startDay; i++) grid.innerHTML += `<div></div>`;
+
         for(let d=1; d<=total; d++) {
             const currentGreg = new Date(ref);
             currentGreg.setDate(ref.getDate() + d - 1);
             const isToday = currentGreg.toDateString() === new Date().toDateString();
+            
             grid.innerHTML += `
                 <div class="hijri-cell ${isToday ? 'active' : ''}">
                     <span class="font-amiri text-2xl leading-none">${toArNum(d)}</span>
@@ -377,24 +379,43 @@
         return { day: diff + 1, month: db.hijri.month };
     }
 
-    function formatTime(m) { return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`; }
-    function toArNum(n) { return String(n).split('').map(x => AR_NUMS[x] || x).join(''); }
-    function updateLocation() { localStorage.setItem('userCity', document.getElementById('citySelect').value); document.getElementById('locLabel').innerText = document.getElementById('citySelect').value; render(); }
-    function toggleTheme() { isDark = !isDark; localStorage.setItem('theme', isDark ? 'dark' : 'light'); document.documentElement.classList.toggle('dark'); updateThemeUI(); }
-    function updateThemeUI() { document.getElementById('themeIcon').setAttribute('data-lucide', isDark ? 'moon' : 'sun'); lucide.createIcons(); }
+    function formatTime(m) {
+        return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+    }
 
-    // PIN & Admin
+    function toArNum(n) {
+        return String(n).split('').map(x => AR_NUMS[x] || x).join('');
+    }
+
+    function updateLocation() {
+        const c = document.getElementById('citySelect').value;
+        localStorage.setItem('userCity', c);
+        document.getElementById('locLabel').innerText = c;
+        render();
+    }
+
+    // --- PIN & Admin Logic ---
     function openPin() { document.getElementById('pinOverlay').classList.remove('hidden'); }
     function closePin() { document.getElementById('pinOverlay').classList.add('hidden'); clearPin(); }
     function pressKey(n) {
         if(inputPin.length < 4) {
             inputPin += n;
-            document.getElementById(`dot${inputPin.length}`).classList.add('bg-primary');
-            if(inputPin === PIN_CODE) { setTimeout(() => { closePin(); document.getElementById('adminDash').classList.remove('hidden'); }, 200); }
-            else if(inputPin.length === 4) { setTimeout(clearPin, 400); }
+            document.getElementById(`dot${inputPin.length}`).classList.add('bg-[#064439]');
+            if(inputPin === PIN_CODE) {
+                setTimeout(() => {
+                    closePin();
+                    document.getElementById('adminDash').classList.remove('hidden');
+                    Swal.fire({ icon: 'success', title: 'ยินดีต้อนรับแอดมิน', timer: 1500, showConfirmButton: false });
+                }, 200);
+            } else if(inputPin.length === 4) {
+                setTimeout(clearPin, 400);
+            }
         }
     }
-    function clearPin() { inputPin = ""; for(let i=1; i<=4; i++) document.getElementById(`dot${i}`).classList.remove('bg-primary'); }
+    function clearPin() {
+        inputPin = "";
+        for(let i=1; i<=4; i++) document.getElementById(`dot${i}`).classList.remove('bg-[#064439]');
+    }
     function logoutAdmin() { document.getElementById('adminDash').classList.add('hidden'); }
 
     function saveRange() {
@@ -402,21 +423,37 @@
             id: Date.now(),
             start: document.getElementById('rangeStart').value,
             end: document.getElementById('rangeEnd').value,
-            v: { im: document.getElementById('t-im').value, fa: document.getElementById('t-fa').value, sh: document.getElementById('t-sh').value, dh: document.getElementById('t-dh').value, as: document.getElementById('t-as').value, ma: document.getElementById('t-ma').value, is: document.getElementById('t-is').value }
+            v: {
+                im: document.getElementById('t-im').value, fa: document.getElementById('t-fa').value,
+                sh: document.getElementById('t-sh').value, dh: document.getElementById('t-dh').value,
+                as: document.getElementById('t-as').value, ma: document.getElementById('t-ma').value,
+                is: document.getElementById('t-is').value
+            }
         };
         if(!range.start || !range.end) return Swal.fire('ผิดพลาด', 'กรุณาเลือกวันที่', 'error');
         db.ranges.push(range);
-        localStorage.setItem('prayerProDB_final', JSON.stringify(db));
+        localStorage.setItem('prayerProDB_v4', JSON.stringify(db));
         Swal.fire('สำเร็จ', 'บันทึกช่วงเวลาเรียบร้อยแล้ว', 'success');
-        renderRangeList(); render();
+        renderRangeList();
+        render();
     }
 
     function deleteRange(id) {
-        Swal.fire({ title: 'ยืนยันการลบ?', text: "คุณต้องการลบช่วงเวลานี้ใช่หรือไม่", icon: 'warning', showCancelButton: true, confirmButtonColor: '#064439', cancelButtonColor: '#d33', confirmButtonText: 'ลบเลย', cancelButtonText: 'ยกเลิก' }).then((result) => {
+        Swal.fire({
+            title: 'ยืนยันการลบ?',
+            text: "คุณต้องการลบช่วงเวลานี้ใช่หรือไม่",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#064439',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ลบเลย',
+            cancelButtonText: 'ยกเลิก'
+        }).then((result) => {
             if (result.isConfirmed) {
                 db.ranges = db.ranges.filter(r => r.id !== id);
-                localStorage.setItem('prayerProDB_final', JSON.stringify(db));
-                renderRangeList(); render();
+                localStorage.setItem('prayerProDB_v4', JSON.stringify(db));
+                renderRangeList();
+                render();
                 Swal.fire('ลบแล้ว!', 'ข้อมูลถูกลบเรียบร้อย', 'success');
             }
         });
@@ -426,20 +463,32 @@
         const list = document.getElementById('rangeList');
         list.innerHTML = '';
         db.ranges.sort((a,b) => new Date(a.start) - new Date(b.start)).forEach(r => {
-            list.innerHTML += `<div class="flex justify-between items-center p-4 bg-gray-50 dark:bg-slate-700 rounded-2xl border border-gray-100 dark:border-slate-600 font-kanit"><div class="text-xs"><span class="font-bold text-primary dark:text-emerald-400">${r.start}</span> ถึง <span class="font-bold text-primary dark:text-emerald-400">${r.end}</span></div><button onclick="deleteRange(${r.id})" class="text-red-500 p-2 hover:bg-red-50 rounded-lg transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
+            list.innerHTML += `
+                <div class="flex justify-between items-center p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                    <div class="text-xs font-kanit">
+                        <span class="font-bold text-[#064439]">${r.start}</span> ถึง <span class="font-bold text-[#064439]">${r.end}</span>
+                    </div>
+                    <button onclick="deleteRange(${r.id})" class="text-red-500 p-2 hover:bg-red-50 rounded-lg transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                </div>
+            `;
         });
         lucide.createIcons();
     }
 
     function saveHijri() {
-        db.hijri = { month: parseInt(document.getElementById('hMonth').value), refDate: document.getElementById('hRefDate').value, total: parseInt(document.getElementById('hTotalDays').value) };
+        db.hijri = {
+            month: parseInt(document.getElementById('hMonth').value),
+            refDate: document.getElementById('hRefDate').value,
+            total: parseInt(document.getElementById('hTotalDays').value)
+        };
         if(!db.hijri.refDate) return Swal.fire('ผิดพลาด', 'กรุณาเลือกวันที่อ้างอิง', 'error');
-        localStorage.setItem('prayerProDB_final', JSON.stringify(db));
+        localStorage.setItem('prayerProDB_v4', JSON.stringify(db));
         Swal.fire('สำเร็จ', 'บันทึกปฏิทินเรียบร้อยแล้ว', 'success');
         render();
     }
 
     window.onload = init;
 </script>
+
 </body>
 </html>
