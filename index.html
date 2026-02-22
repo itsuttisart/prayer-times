@@ -32,9 +32,6 @@
         body { font-family: 'Kanit', sans-serif; background-color: #f0f2f1; margin: 0; display: flex; justify-content: center; }
         .app-shell { width: 100%; max-width: 430px; background: #fff; min-height: 100vh; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 60px rgba(0,0,0,0.15); }
         
-        .font-amiri { font-family: 'Amiri', serif !important; }
-        .font-kanit { font-family: 'Kanit', sans-serif !important; }
-
         /* Enhanced Glow Effect */
         .active-glow {
             position: relative;
@@ -45,28 +42,17 @@
         }
         
         @keyframes pulse-glow {
-            0%, 100% {
-                box-shadow: 0 0 30px 10px rgba(6, 68, 57, 0.3);
-                border-color: rgba(6, 68, 57, 0.5);
-            }
-            50% {
-                box-shadow: 0 0 50px 15px rgba(6, 68, 57, 0.5);
-                border-color: rgba(6, 68, 57, 0.8);
-            }
+            0%, 100% { box-shadow: 0 0 30px 10px rgba(6, 68, 57, 0.3); border-color: rgba(6, 68, 57, 0.5); }
+            50% { box-shadow: 0 0 50px 15px rgba(6, 68, 57, 0.5); border-color: rgba(6, 68, 57, 0.8); }
         }
         
         .active-glow::after {
-            content: '';
-            position: absolute;
-            inset: -3px;
-            border-radius: 32px;
-            padding: 3px;
+            content: ''; position: absolute; inset: -3px; border-radius: 32px; padding: 3px;
             background: linear-gradient(45deg, #064439, #2e7d32, #00bcd4, #064439);
             background-size: 300% 300%;
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
+            -webkit-mask-composite: xor; mask-composite: exclude;
             animation: rotate-glow 3s linear infinite;
         }
         
@@ -80,84 +66,14 @@
         .hijri-cell { aspect-ratio: 1/1.1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 14px; border: 1px solid #f1f5f9; background: #f8fafc; transition: all 0.3s; }
         .hijri-cell.active { background: #064439; color: white; border-color: #064439; box-shadow: 0 8px 15px rgba(6, 68, 57, 0.3); transform: scale(1.05); }
 
-        .admin-card { 
-            background: linear-gradient(145deg, #ffffff, #f9fafb);
-            padding: 28px; 
-            border-radius: 28px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
-            border: 1px solid #e5e7eb; 
-            margin-bottom: 24px;
-            transition: all 0.3s;
-        }
-        .admin-card:hover {
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-            transform: translateY(-2px);
-        }
-        .admin-input { 
-            width: 100%; 
-            padding: 14px 18px; 
-            border-radius: 14px; 
-            border: 2px solid #e5e7eb; 
-            outline: none; 
-            transition: all 0.3s; 
-            font-family: 'Kanit', sans-serif; 
-            font-size: 14px;
-            background: #ffffff;
-        }
-        .admin-input:focus { 
-            border-color: #064439;
-            box-shadow: 0 0 0 4px rgba(6, 68, 57, 0.1);
-        }
-        .admin-label { 
-            font-size: 11px; 
-            font-weight: 700; 
-            color: #6b7280; 
-            text-transform: uppercase; 
-            letter-spacing: 0.1em; 
-            margin-bottom: 8px; 
-            display: block; 
-            margin-left: 4px;
-        }
-        .admin-btn {
-            width: 100%;
-            padding: 16px;
-            border-radius: 16px;
-            font-weight: 700;
-            font-family: 'Kanit', sans-serif;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-        .admin-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(0,0,0,0.2);
-        }
+        .admin-input { width: 100%; padding: 14px 18px; border-radius: 14px; border: 2px solid #e5e7eb; outline: none; transition: all 0.3s; font-size: 14px; background: #ffffff; }
+        .admin-input:focus { border-color: #064439; box-shadow: 0 0 0 4px rgba(6, 68, 57, 0.1); }
+        .admin-label { font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; display: block; }
+        
+        .spinner { border: 3px solid #f3f4f6; border-top: 3px solid #064439; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .spinner {
-            border: 3px solid #f3f4f6;
-            border-top: 3px solid #064439;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(255,255,255,0.95);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            backdrop-filter: blur(4px);
-        }
+        .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.95); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(4px); }
     </style>
 </head>
 <body class="font-kanit">
@@ -166,8 +82,7 @@
 <div id="loadingScreen" class="loading-overlay">
     <div class="text-center">
         <div class="spinner mx-auto mb-4"></div>
-        <p class="text-primary font-bold text-lg font-kanit">กำลังโหลดข้อมูล...</p>
-        <p class="text-gray-400 text-sm font-kanit mt-2">กรุณารอสักครู่</p>
+        <p class="text-primary font-bold text-lg">กำลังโหลดข้อมูล...</p>
     </div>
 </div>
 
@@ -176,11 +91,11 @@
     <div class="flex justify-between items-start p-6 pt-10 pb-4">
         <div class="flex flex-col">
             <h1 class="font-amiri text-3xl text-primary leading-tight" id="topHijri">--</h1>
-            <div class="text-xs font-light text-gray-400 mt-1 font-kanit" id="topGregorian">--</div>
+            <div class="text-xs font-light text-gray-400 mt-1" id="topGregorian">--</div>
         </div>
         <div class="text-right">
-            <div class="text-2xl font-bold text-primary tracking-tight font-kanit" id="liveClock">00:00:00</div>
-            <div class="flex items-center justify-end gap-1 text-accent text-xs mt-1 font-kanit">
+            <div class="text-2xl font-bold text-primary tracking-tight" id="liveClock">00:00:00</div>
+            <div class="flex items-center justify-end gap-1 text-accent text-xs mt-1">
                 <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
                 <span id="locLabel">ยะลา</span>
             </div>
@@ -189,16 +104,16 @@
 
     <!-- Active Prayer Card -->
     <div class="mx-6 my-4 bg-white rounded-[32px] p-8 relative overflow-hidden active-glow">
-        <div class="absolute top-6 right-8 bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full tracking-wider animate-pulse font-kanit z-10">
+        <div class="absolute top-6 right-8 bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full tracking-wider animate-pulse z-10">
             NOW
         </div>
         
         <div class="flex justify-between items-center relative z-10">
             <div class="flex flex-col">
                 <p class="font-amiri text-6xl text-primary mb-2" id="nowArName">--</p>
-                <div class="text-7xl font-bold text-primary tracking-tighter font-kanit" id="nowTimeVal">00:00</div>
+                <div class="text-7xl font-bold text-primary tracking-tighter" id="nowTimeVal">00:00</div>
                 <div class="mt-6 inline-flex items-center px-4 py-2 bg-red-50 rounded-full border border-red-100">
-                    <p class="text-red-500 text-[11px] font-semibold font-kanit" id="countdown">คำนวณเวลา...</p>
+                    <p class="text-red-500 text-[11px] font-semibold" id="countdown">คำนวณเวลา...</p>
                 </div>
             </div>
             <div class="p-6 rounded-full bg-gray-50" id="nowIconContainer">
@@ -213,7 +128,7 @@
     <!-- City Selector -->
     <div class="px-6 mt-8">
         <div class="relative">
-            <select id="citySelect" onchange="updateLocation()" class="w-full appearance-none bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 text-gray-700 font-medium font-kanit cursor-pointer focus:outline-none">
+            <select id="citySelect" onchange="updateLocation()" class="w-full appearance-none bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 text-gray-700 font-medium cursor-pointer focus:outline-none">
                 <option value="ยะลา">ยะลา</option>
                 <option value="นครศรีธรรมราช">นครศรีธรรมราช / พัทลุง</option>
                 <option value="จะนะ">จะนะ / เทพา</option>
@@ -234,24 +149,24 @@
         <div class="flex justify-between items-center mb-8 px-1">
             <div>
                 <h3 class="font-bold text-primary text-xl font-amiri" id="calHijriMonth">--</h3>
-                <p class="text-[10px] text-gray-400 font-kanit mt-1" id="calGregorianRange">--</p>
+                <p class="text-[10px] text-gray-400 mt-1" id="calGregorianRange">--</p>
             </div>
-            <div class="text-[9px] font-bold text-gray-300 uppercase tracking-[0.2em] font-kanit">HIJRI CALENDAR</div>
+            <div class="text-[9px] font-bold text-gray-300 uppercase tracking-[0.2em]">HIJRI CALENDAR</div>
         </div>
         <div class="grid grid-cols-7 gap-2 mb-4">
-            <div class="text-[10px] font-bold text-red-400 text-center font-kanit">อา</div>
-            <div class="text-[10px] font-bold text-gray-400 text-center font-kanit">จ</div>
-            <div class="text-[10px] font-bold text-gray-400 text-center font-kanit">อ</div>
-            <div class="text-[10px] font-bold text-gray-400 text-center font-kanit">พ</div>
-            <div class="text-[10px] font-bold text-gray-400 text-center font-kanit">พฤ</div>
-            <div class="text-[10px] font-bold text-gray-400 text-center font-kanit">ศ</div>
-            <div class="text-[10px] font-bold text-gray-400 text-center font-kanit">ส</div>
+            <div class="text-[10px] font-bold text-red-400 text-center">อา</div>
+            <div class="text-[10px] font-bold text-gray-400 text-center">จ</div>
+            <div class="text-[10px] font-bold text-gray-400 text-center">อ</div>
+            <div class="text-[10px] font-bold text-gray-400 text-center">พ</div>
+            <div class="text-[10px] font-bold text-gray-400 text-center">พฤ</div>
+            <div class="text-[10px] font-bold text-gray-400 text-center">ศ</div>
+            <div class="text-[10px] font-bold text-gray-400 text-center">ส</div>
         </div>
         <div class="hijri-grid" id="hijriGrid"></div>
     </div>
 
     <!-- Admin Trigger -->
-    <div class="mt-auto py-10 text-[10px] font-bold text-gray-200 tracking-[0.5em] hover:text-primary transition-all uppercase text-center cursor-pointer font-kanit" onclick="showConfig()">
+    <div class="mt-auto py-10 text-[10px] font-bold text-gray-200 tracking-[0.5em] hover:text-primary transition-all uppercase text-center cursor-pointer" onclick="showConfig()">
         Configuration
     </div>
 </div>
@@ -260,56 +175,39 @@
 <div id="configModal" class="fixed inset-0 bg-black/50 z-[100] hidden flex items-center justify-center p-6" onclick="closeConfig(event)">
     <div class="bg-white rounded-[32px] p-8 max-w-md w-full" onclick="event.stopPropagation()">
         <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-bold text-primary font-kanit">ตั้งค่าระบบ</h3>
-            <button onclick="closeConfig()" class="text-gray-400 hover:text-primary transition-all">
+            <h3 class="text-xl font-bold text-primary">ตั้งค่าระบบ</h3>
+            <button onclick="closeConfig()" class="text-gray-400 hover:text-primary">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
         </div>
 
-        <!-- Google Sheets URL -->
         <div class="mb-6">
             <label class="admin-label">Google Sheets URL</label>
-            <input type="text" id="sheetsUrl" class="admin-input mb-2" placeholder="https://docs.google.com/spreadsheets/d/...">
-            <p class="text-xs text-gray-400 font-kanit ml-1">ต้องมี 2 Sheet: "PrayerTimes" และ "HijriCalendar"</p>
+            <input type="text" id="sheetsUrl" class="admin-input mb-2" placeholder="https://docs.google.com/spreadsheets/d/1IPsURd4UrMnQWxR5xgHkKgG-GRQ3HuKDw4aSzfQAh_4/edit?gid=0#gid=0">
+            <p class="text-xs text-gray-400">ลิงก์นี้จะถูกบันทึกไว้ในเครื่องของคุณ</p>
         </div>
 
-        <button onclick="saveConfig()" class="admin-btn bg-primary text-white hover:bg-accent mb-3">
-            <i data-lucide="save" class="w-4 h-4 inline mr-2"></i> บันทึกและโหลดข้อมูล
+        <button onclick="saveConfig()" class="w-full bg-primary text-white p-4 rounded-2xl font-bold shadow-lg hover:bg-accent transition-all">
+            บันทึกและโหลดข้อมูล
         </button>
-
-        <button onclick="testConnection()" class="admin-btn bg-blue-600 text-white hover:bg-blue-700">
-            <i data-lucide="link" class="w-4 h-4 inline mr-2"></i> ทดสอบการเชื่อมต่อ
-        </button>
-
-        <div id="configStatus" class="mt-4 p-4 rounded-xl hidden">
-            <p class="text-sm font-kanit"></p>
-        </div>
     </div>
 </div>
 
-<!-- Azan Audio -->
 <audio id="azanAudio" preload="auto">
     <source src="https://raw.githubusercontent.com/itsutisart/prayer-times/main/azan.mp3" type="audio/mpeg">
 </audio>
 
 <script>
     // ==================== CONFIGURATION ====================
+    // *** คุณสามารถใส่ลิงก์ Google Sheets เริ่มต้นที่นี่ได้เลย ***
+    const DEFAULT_SHEETS_URL = ""; 
+
     const CONFIG = {
-        sheetsUrl: localStorage.getItem('sheetsUrl') || '',
+        sheetsUrl: localStorage.getItem('sheetsUrl') || DEFAULT_SHEETS_URL,
         city: localStorage.getItem('userCity') || 'ยะลา'
     };
 
-    const OFFSETS = { 
-        'ยะลา': 0, 
-        'นครศรีธรรมราช': 3, 
-        'จะนะ': 1, 
-        'สตูล': 2, 
-        'ตรัง': 4, 
-        'ปัตตานี': -2, 
-        'นราธิวาส': -4, 
-        'สุไหงโกลก': -5 
-    };
-
+    const OFFSETS = { 'ยะลา': 0, 'นครศรีธรรมราช': 3, 'จะนะ': 1, 'สตูล': 2, 'ตรัง': 4, 'ปัตตานี': -2, 'นราธิวาส': -4, 'สุไหงโกลก': -5 };
     const PRAYER_META = [
         { id: 'im', ar: 'إمساك', icon: 'clock', color: 'text-indigo-500', bg: 'bg-indigo-50' },
         { id: 'fa', ar: 'صبح', icon: 'sunrise', color: 'text-blue-400', bg: 'bg-blue-50' },
@@ -321,275 +219,126 @@
     ];
 
     const AR_NUMS = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
-    const AR_MONTHS = ["","محرم","صفر","ربيع الأول","ربيع الثاني","جمادى الأولى","جمادى الآخرة","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
+    const AR_MONTHS = ["","محرم","صفر","ربيع الأول","ربيع الثاني","جمادى الأولى","جمادى الآخرة","รجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
     const TH_MONTHS = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
 
-    // ==================== STATE ====================
     let prayerData = [];
     let hijriData = null;
     let lastAzanPlayed = "";
 
-    // ==================== GOOGLE SHEETS ====================
     function extractSheetId(url) {
         const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
         return match ? match[1] : null;
     }
 
-    function getSheetUrl(sheetId, gid) {
-        return `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
-    }
-
-    async function loadPrayerTimes(sheetId) {
-        try {
-            // Default GID for first sheet is 0
-            const url = getSheetUrl(sheetId, 0);
-            const response = await fetch(url);
-            if (!response.ok) throw new Error('Cannot access prayer times sheet');
-            
-            const csv = await response.text();
-            prayerData = parseCSV(csv);
-            
-            console.log('✅ Prayer times loaded:', prayerData.length, 'records');
-            return true;
-        } catch (error) {
-            console.error('❌ Prayer times error:', error);
-            throw error;
-        }
-    }
-
-    async function loadHijriCalendar(sheetId) {
-        try {
-            // You need to find the GID of "HijriCalendar" sheet
-            // Usually it's the second sheet, so we try common GIDs
-            const possibleGids = [1, 2, '1', '2'];
-            
-            for (let gid of possibleGids) {
-                try {
-                    const url = getSheetUrl(sheetId, gid);
-                    const response = await fetch(url);
-                    if (response.ok) {
-                        const csv = await response.text();
-                        hijriData = parseHijriCSV(csv);
-                        console.log('✅ Hijri calendar loaded:', hijriData);
-                        return true;
-                    }
-                } catch (e) {
-                    continue;
-                }
-            }
-            
-            throw new Error('Cannot find HijriCalendar sheet');
-        } catch (error) {
-            console.error('❌ Hijri calendar error:', error);
-            // Use default if fails
-            hijriData = { month: 9, year: 1447, refDate: '2026-03-01', total: 30 };
-            return false;
-        }
-    }
-
-    function parseCSV(csv) {
-        const lines = csv.trim().split('\n');
-        const data = [];
-        
-        for (let i = 1; i < lines.length; i++) {
-            const values = lines[i].split(',');
-            if (values.length >= 9) {
-                data.push({
-                    start: values[0].trim(),
-                    end: values[1].trim(),
-                    times: {
-                        im: values[2].trim(),
-                        fa: values[3].trim(),
-                        sh: values[4].trim(),
-                        dh: values[5].trim(),
-                        as: values[6].trim(),
-                        ma: values[7].trim(),
-                        is: values[8].trim()
-                    }
-                });
-            }
-        }
-        
-        return data;
-    }
-
-    function parseHijriCSV(csv) {
-        const lines = csv.trim().split('\n');
-        if (lines.length < 2) return null;
-        
-        const values = lines[1].split(',');
-        return {
-            month: parseInt(values[0]) || 9,
-            year: parseInt(values[1]) || 1447,
-            refDate: values[2].trim() || '2026-03-01',
-            total: parseInt(values[3]) || 30
-        };
-    }
-
     async function loadAllData() {
         if (!CONFIG.sheetsUrl) {
-            hideLoading();
-            showConfig();
+            document.getElementById('loadingScreen').style.display = 'none';
             return;
         }
 
         const sheetId = extractSheetId(CONFIG.sheetsUrl);
-        if (!sheetId) {
-            hideLoading();
-            Swal.fire({
-                icon: 'error',
-                title: 'URL ไม่ถูกต้อง',
-                text: 'กรุณาตรวจสอบ Google Sheets URL',
-                confirmButtonColor: '#064439'
-            });
-            return;
-        }
+        if (!sheetId) return;
 
         try {
-            await loadPrayerTimes(sheetId);
-            await loadHijriCalendar(sheetId);
-            
-            hideLoading();
+            // Load Prayer Times (Sheet 1 - GID 0)
+            const pRes = await fetch(`https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=0`);
+            const pCsv = await pRes.text();
+            prayerData = parseCSV(pCsv);
+
+            // Load Hijri Config (Sheet 2 - GID 1)
+            const hRes = await fetch(`https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=1`);
+            const hCsv = await hRes.text();
+            hijriData = parseHijriCSV(hCsv);
+
+            document.getElementById('loadingScreen').style.display = 'none';
             render();
-            
-        } catch (error) {
-            hideLoading();
-            Swal.fire({
-                icon: 'error',
-                title: 'เชื่อมต่อไม่สำเร็จ',
-                html: `
-                    <p>ไม่สามารถโหลดข้อมูลจาก Google Sheets</p>
-                    <p class="text-sm text-gray-500 mt-2">กรุณาตรวจสอบ:</p>
-                    <ul class="text-sm text-left mt-2 text-gray-600">
-                        <li>• ตั้งค่าการแชร์เป็น "Anyone with the link"</li>
-                        <li>• มี Sheet ชื่อ "PrayerTimes" (Sheet แรก)</li>
-                        <li>• มี Sheet ชื่อ "HijriCalendar" (Sheet ที่สอง)</li>
-                    </ul>
-                `,
-                confirmButtonColor: '#064439'
-            });
+        } catch (e) {
+            console.error(e);
+            document.getElementById('loadingScreen').style.display = 'none';
         }
     }
 
-    // ==================== RENDERING ====================
-    function render() {
-        if (prayerData.length === 0) return;
-
-        const now = new Date();
-        const city = CONFIG.city;
-        const offset = OFFSETS[city] || 0;
-        const todayStr = now.toISOString().split('T')[0];
-
-        // Find active range
-        const activeRange = prayerData.find(r => todayStr >= r.start && todayStr <= r.end);
-        if (!activeRange) {
-            console.warn('No prayer times for today');
-            return;
-        }
-
-        const baseTimes = activeRange.times;
-        const curMin = now.getHours() * 60 + now.getMinutes();
-        
-        const processed = PRAYER_META.map(p => {
-            const [h, m] = baseTimes[p.id].split(':').map(Number);
-            const total = h * 60 + m + offset;
-            return { ...p, total, str: formatTime(total) };
+    function parseCSV(csv) {
+        return csv.trim().split('\n').slice(1).map(line => {
+            const v = line.split(',');
+            return { start: v[0].trim(), end: v[1].trim(), times: { im: v[2], fa: v[3], sh: v[4], dh: v[5], as: v[6], ma: v[7], is: v[8] } };
         });
-        
-        window.currentPrayerTimes = processed;
+    }
+
+    function parseHijriCSV(csv) {
+        const v = csv.trim().split('\n')[1].split(',');
+        return { month: parseInt(v[0]), year: parseInt(v[1]), refDate: v[2].trim(), total: parseInt(v[3]) };
+    }
+
+    function render() {
+        const now = new Date();
+        const todayStr = now.toISOString().split('T')[0];
+        const range = prayerData.find(r => todayStr >= r.start && todayStr <= r.end);
+        if (!range) return;
+
+        const offset = OFFSETS[CONFIG.city] || 0;
+        const curMin = now.getHours() * 60 + now.getMinutes();
+        const processed = PRAYER_META.map(p => {
+            const [h, m] = range.times[p.id].split(':').map(Number);
+            const total = h * 60 + m + offset;
+            return { ...p, total, str: `${String(Math.floor(total/60)).padStart(2,'0')}:${String(total%60).padStart(2,'0')}` };
+        });
 
         let curIdx = 0;
-        for(let i = processed.length - 1; i >= 0; i--) {
-            if(curMin >= processed[i].total) { curIdx = i; break; }
-        }
+        for(let i = processed.length - 1; i >= 0; i--) { if(curMin >= processed[i].total) { curIdx = i; break; } }
         
         const active = processed[curIdx];
-        window.nextPrayer = processed[(curIdx + 1) % processed.length];
-        window.nextPrayerTotal = window.nextPrayer.total;
-        if (curIdx === processed.length - 1) window.nextPrayerTotal += 1440;
-
-        // Update active card
+        const next = processed[(curIdx + 1) % processed.length];
+        
         document.getElementById('nowArName').innerText = active.ar;
         document.getElementById('nowTimeVal').innerText = active.str;
         document.getElementById('nowIconContainer').className = `p-6 rounded-full ${active.bg}`;
         document.getElementById('nowIcon').setAttribute('data-lucide', active.icon);
-        document.getElementById('nowIcon').className = `${active.color} w-16 h-16`;
 
-        // Update prayer grid
         const grid = document.getElementById('prayerGrid');
         grid.innerHTML = '';
         processed.forEach((p, idx) => {
             if(idx !== curIdx) {
                 grid.innerHTML += `
-                    <div class="bg-[#064439] text-white rounded-[28px] p-6 flex flex-col items-center justify-center shadow-lg border border-white/5 transition-transform hover:scale-105">
-                        <div class="mb-4 p-2.5 rounded-xl bg-white/10"><i data-lucide="${p.icon}" class="w-5 h-5 text-white"></i></div>
-                        <span class="font-amiri text-2xl leading-none mb-3">${p.ar}</span>
-                        <span class="text-2xl font-bold font-kanit tracking-tight">${p.str}</span>
-                    </div>
-                `;
+                    <div class="bg-primary text-white rounded-[28px] p-6 flex flex-col items-center justify-center shadow-lg">
+                        <div class="mb-4 p-2.5 rounded-xl bg-white/10"><i data-lucide="${p.icon}" class="w-5 h-5"></i></div>
+                        <span class="font-amiri text-2xl mb-3">${p.ar}</span>
+                        <span class="text-2xl font-bold">${p.str}</span>
+                    </div>`;
             }
         });
 
-        // Update dates
         const hDate = calculateHijri(now);
         document.getElementById('topHijri').innerText = `${toArNum(hDate.day)} ${AR_MONTHS[hDate.month]} ${toArNum(hijriData.year)}`;
         document.getElementById('topGregorian').innerText = now.toLocaleDateString('th-TH', { day:'numeric', month:'long', year:'numeric' });
 
-        renderHijriCalendar();
+        renderCalendar();
         lucide.createIcons();
     }
 
-    function renderHijriCalendar() {
+    function renderCalendar() {
         if (!hijriData) return;
-
         const ref = new Date(hijriData.refDate);
-        const total = hijriData.total;
-        const monthAr = AR_MONTHS[hijriData.month];
+        document.getElementById('calHijriMonth').innerText = AR_MONTHS[hijriData.month];
         
-        document.getElementById('calHijriMonth').innerText = monthAr;
-        
-        const endDate = new Date(ref);
-        endDate.setDate(ref.getDate() + total - 1);
-        const rangeText = `${ref.getDate()} ${TH_MONTHS[ref.getMonth()]} - ${endDate.getDate()} ${TH_MONTHS[endDate.getMonth()]} ${endDate.getFullYear() + 543}`;
-        document.getElementById('calGregorianRange').innerText = rangeText;
-
         const grid = document.getElementById('hijriGrid');
         grid.innerHTML = '';
-
-        const startDay = ref.getDay();
-        for(let i=0; i<startDay; i++) grid.innerHTML += `<div></div>`;
-
-        for(let d=1; d<=total; d++) {
-            const currentGreg = new Date(ref);
-            currentGreg.setDate(ref.getDate() + d - 1);
-            const isToday = currentGreg.toDateString() === new Date().toDateString();
-            
-            grid.innerHTML += `
-                <div class="hijri-cell ${isToday ? 'active' : ''}">
-                    <span class="font-amiri text-2xl leading-none">${toArNum(d)}</span>
-                    <span class="text-[8px] font-kanit opacity-50 mt-1">${currentGreg.getDate()}</span>
-                </div>
-            `;
+        for(let i=0; i<ref.getDay(); i++) grid.innerHTML += `<div></div>`;
+        for(let d=1; d<=hijriData.total; d++) {
+            const curr = new Date(ref); curr.setDate(ref.getDate() + d - 1);
+            const isToday = curr.toDateString() === new Date().toDateString();
+            grid.innerHTML += `<div class="hijri-cell ${isToday ? 'active' : ''}"><span class="font-amiri text-2xl">${toArNum(d)}</span><span class="text-[8px] opacity-50">${curr.getDate()}</span></div>`;
         }
     }
 
     function calculateHijri(date) {
-        if (!hijriData) return { day: 1, month: 9 };
-        
-        const ref = new Date(hijriData.refDate);
-        const diff = Math.floor((date - ref) / 86400000);
-        if (diff < 0 || diff >= hijriData.total) return { day: 1, month: hijriData.month };
-        return { day: diff + 1, month: hijriData.month };
+        if (!hijriData) return { day: 1, month: 1 };
+        const diff = Math.floor((date - new Date(hijriData.refDate)) / 86400000);
+        return { day: Math.max(1, diff + 1), month: hijriData.month };
     }
 
-    // ==================== HELPERS ====================
-    function formatTime(m) {
-        return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
-    }
-
-    function toArNum(n) {
-        return String(n).split('').map(x => AR_NUMS[x] || x).join('');
-    }
+    function toArNum(n) { return String(n).split('').map(x => AR_NUMS[x] || x).join(''); }
 
     function updateLocation() {
         CONFIG.city = document.getElementById('citySelect').value;
@@ -598,164 +347,29 @@
         render();
     }
 
-    function hideLoading() {
-        document.getElementById('loadingScreen').style.display = 'none';
-    }
-
-    // ==================== CLOCK & COUNTDOWN ====================
     function tick() {
         const now = new Date();
-        const timeStr = now.toLocaleTimeString('th-TH', { hour12: false });
-        document.getElementById('liveClock').innerText = timeStr;
-        updateCountdown();
-        checkAzan(timeStr);
+        document.getElementById('liveClock').innerText = now.toLocaleTimeString('th-TH', { hour12: false });
     }
 
-    function updateCountdown() {
-        if (!window.nextPrayer) return;
-        const now = new Date();
-        const curSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-        const targetSec = window.nextPrayerTotal * 60;
-        
-        let diff = targetSec - curSec;
-        if (diff < 0) diff = 0;
-
-        const h = Math.floor(diff / 3600);
-        const m = Math.floor((diff % 3600) / 60);
-        const s = diff % 60;
-        
-        document.getElementById('countdown').innerText = `อีก ${h} ชม. ${m} นาที ${s} วิ จะเข้าเวลาถัดไป`;
-    }
-
-    function checkAzan(currentTime) {
-        const prayerTimes = window.currentPrayerTimes;
-        if (!prayerTimes) return;
-        
-        const majorPrayers = ['fa', 'dh', 'as', 'ma', 'is'];
-        majorPrayers.forEach(id => {
-            const p = prayerTimes.find(x => x.id === id);
-            if (p && p.str === currentTime.substring(0, 5)) {
-                const currentKey = `${id}-${currentTime.substring(0, 5)}`;
-                if (lastAzanPlayed !== currentKey) {
-                    playAzan(p.ar);
-                    lastAzanPlayed = currentKey;
-                }
-            }
-        });
-    }
-
-    function playAzan(prayerName) {
-        const audio = document.getElementById('azanAudio');
-        audio.currentTime = 0;
-        
-        Swal.fire({
-            title: `<span class="font-amiri" style="font-size: 2em;">${prayerName}</span>`,
-            html: '<p class="font-kanit">ได้เวลาละหมาดแล้ว<br>อัซซานกำลังดัง...</p>',
-            icon: 'info',
-            timer: 10000,
-            showConfirmButton: true,
-            confirmButtonText: 'รับทราบ',
-            confirmButtonColor: '#064439',
-            allowOutsideClick: false,
-            didOpen: () => {
-                audio.play().catch(e => console.log("Audio blocked:", e));
-            },
-            willClose: () => {
-                audio.pause();
-                audio.currentTime = 0;
-            }
-        });
-    }
-
-    // ==================== CONFIG MODAL ====================
-    function showConfig() {
-        document.getElementById('configModal').classList.remove('hidden');
-        document.getElementById('sheetsUrl').value = CONFIG.sheetsUrl;
-        lucide.createIcons();
-    }
-
-    function closeConfig(event) {
-        if (!event || event.target.id === 'configModal') {
-            document.getElementById('configModal').classList.add('hidden');
-        }
-    }
-
+    function showConfig() { document.getElementById('configModal').classList.remove('hidden'); document.getElementById('sheetsUrl').value = CONFIG.sheetsUrl; }
+    function closeConfig(e) { if(!e || e.target.id === 'configModal') document.getElementById('configModal').classList.add('hidden'); }
     function saveConfig() {
         const url = document.getElementById('sheetsUrl').value.trim();
-        if (!url) {
-            showStatus('กรุณากรอก URL', 'error');
-            return;
-        }
-
+        if(!url) return;
         CONFIG.sheetsUrl = url;
         localStorage.setItem('sheetsUrl', url);
-        
-        showStatus('กำลังโหลดข้อมูล...', 'loading');
-        
-        setTimeout(() => {
-            closeConfig();
-            document.getElementById('loadingScreen').style.display = 'flex';
-            loadAllData();
-        }, 500);
+        location.reload();
     }
 
-    async function testConnection() {
-        const url = document.getElementById('sheetsUrl').value.trim();
-        if (!url) {
-            showStatus('กรุณากรอก URL', 'error');
-            return;
-        }
-
-        const sheetId = extractSheetId(url);
-        if (!sheetId) {
-            showStatus('URL ไม่ถูกต้อง', 'error');
-            return;
-        }
-
-        showStatus('กำลังทดสอบ...', 'loading');
-
-        try {
-            const testUrl = getSheetUrl(sheetId, 0);
-            const response = await fetch(testUrl);
-            if (response.ok) {
-                showStatus('✅ เชื่อมต่อสำเร็จ!', 'success');
-            } else {
-                showStatus('❌ ไม่สามารถเข้าถึงได้ ตรวจสอบการตั้งค่าการแชร์', 'error');
-            }
-        } catch (error) {
-            showStatus('❌ เกิดข้อผิดพลาด', 'error');
-        }
-    }
-
-    function showStatus(message, type) {
-        const status = document.getElementById('configStatus');
-        const colors = {
-            'success': 'bg-green-50 text-green-700 border border-green-200',
-            'error': 'bg-red-50 text-red-700 border border-red-200',
-            'loading': 'bg-blue-50 text-blue-700 border border-blue-200'
-        };
-        
-        status.className = `mt-4 p-4 rounded-xl ${colors[type]}`;
-        status.querySelector('p').textContent = message;
-        status.classList.remove('hidden');
-        
-        if (type !== 'loading') {
-            setTimeout(() => status.classList.add('hidden'), 3000);
-        }
-    }
-
-    // ==================== INITIALIZATION ====================
-    function init() {
+    window.onload = () => {
         document.getElementById('citySelect').value = CONFIG.city;
         document.getElementById('locLabel').innerText = CONFIG.city;
-        
         setInterval(tick, 1000);
         loadAllData();
         lucide.createIcons();
-    }
-
-    window.onload = init;
+    };
 </script>
-
 </body>
 </html>
+
