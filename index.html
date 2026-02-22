@@ -3,146 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prayer Times Pro - Yala & Southern</title>
+    <title>Islamic Prayer Times - Modern UI</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         :root {
             --primary-dark: #064439;
             --accent-green: #1a5d52;
-            --bg-soft: #f0f4f3;
-            --white: #ffffff;
-            --card-gray: #f8faf9;
+            --soft-white: #f8faf9;
+            --text-gray: #757575;
+            --now-red: #ff3b30;
         }
 
         body {
             font-family: 'Kanit', sans-serif;
-            background-color: var(--bg-soft);
+            background-color: #eef2f1;
             margin: 0;
             display: flex;
             justify-content: center;
-            min-height: 100vh;
+            color: var(--primary-dark);
         }
 
-        .container {
+        .app-container {
             width: 100%;
             max-width: 430px;
-            background: var(--white);
+            background: #fff;
             min-height: 100vh;
             position: relative;
-            box-shadow: 0 0 30px rgba(0,0,0,0.05);
+            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Top Header */
-        .header {
-            padding: 40px 25px 10px;
+        /* Top Bar */
+        .top-bar {
+            padding: 30px 25px 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .date-box h2 { margin: 0; font-size: 1.3rem; font-weight: 600; color: #333; }
-        .date-box p { margin: 0; color: #888; font-size: 0.95rem; }
+        .header-info h2 { margin: 0; font-size: 1.2rem; font-weight: 600; }
+        .header-info .city-label { font-size: 0.9rem; color: var(--accent-green); display: flex; align-items: center; gap: 5px; }
 
-        /* Next Prayer Card */
-        .highlight-card {
+        .time-now { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+
+        /* Main Prayer Card (Now) */
+        .main-card {
             margin: 20px 25px;
-            background: var(--white);
-            border-radius: 25px;
+            background: #fff;
+            border-radius: 24px;
             padding: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
             border: 1px solid #f0f0f0;
         }
 
-        .p-label { color: var(--primary-dark); font-size: 1.5rem; font-weight: 600; margin: 0; }
-        .p-time { font-size: 2.5rem; font-weight: 700; color: var(--primary-dark); margin: 5px 0; }
-        .p-status { color: #e53935; font-size: 0.9rem; font-weight: 500; }
+        .prayer-info-now .now-badge {
+            background: var(--now-red);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
 
-        /* Prayer Grid */
+        .prayer-name-ar { font-family: 'Amiri', serif; font-size: 1.8rem; margin: 0; }
+        .prayer-time-big { font-size: 2.8rem; font-weight: bold; margin: 5px 0; letter-spacing: -1px; }
+        .countdown { color: var(--now-red); font-size: 0.9rem; }
+
+        .moon-icon { font-size: 3.5rem; color: #fbc02d; opacity: 0.8; }
+
+        /* Grid Prayer List */
         .prayer-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 12px;
             padding: 0 25px;
-            margin-top: 20px;
+            margin-bottom: 25px;
         }
 
-        .prayer-item {
+        .grid-item {
             background: var(--primary-dark);
-            color: white;
-            border-radius: 18px;
-            padding: 15px 5px;
+            color: #fff;
+            border-radius: 20px;
+            padding: 18px 5px;
             text-align: center;
-            box-shadow: 0 4px 10px rgba(6, 68, 57, 0.15);
+            transition: 0.3s;
         }
 
-        .prayer-item.active { background: #fff; color: var(--primary-dark); border: 2px solid var(--primary-dark); }
-        .prayer-item i { font-size: 1.3rem; margin-bottom: 8px; display: block; opacity: 0.9; }
-        .prayer-item .p-name { font-size: 0.85rem; font-weight: 400; display: block; }
-        .prayer-item .p-val { font-size: 1rem; font-weight: 600; }
+        .grid-item.active { background: #fff; color: var(--primary-dark); border: 2px solid var(--primary-dark); }
+        .grid-item i { font-size: 1.2rem; margin-bottom: 8px; display: block; }
+        .grid-item .ar-label { font-family: 'Amiri', serif; font-size: 1.1rem; display: block; }
+        .grid-item .time-label { font-size: 0.95rem; font-weight: 600; }
 
-        /* Selector */
-        .selector-box {
-            margin: 25px;
+        /* Bottom Section: Hijri Calendar */
+        .bottom-calendar {
+            margin-top: auto;
             background: #f4f8f7;
-            border-radius: 15px;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 40px 40px 0 0;
         }
 
+        .hijri-big { font-family: 'Amiri', serif; font-size: 2.5rem; color: var(--primary-dark); margin-bottom: 5px; }
+        .gregorian-small { font-size: 1rem; color: var(--text-gray); }
+
+        .city-select-box { margin: 20px auto; width: 80%; }
         select {
-            border: none; background: transparent; font-family: 'Kanit';
-            font-size: 1rem; width: 100%; outline: none; color: var(--primary-dark); font-weight: 500;
+            width: 100%; padding: 10px; border-radius: 12px; border: 1px solid #ddd;
+            font-family: 'Kanit'; outline: none; background: #fff;
         }
 
-        /* Admin Trigger */
-        .admin-trigger {
-            text-align: center; color: #ddd; font-size: 0.7rem; cursor: pointer; padding: 20px;
-        }
-
-        /* Modal Settings */
+        /* Admin Styles */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: white; z-index: 2000; overflow-y: auto; padding: 25px; box-sizing: border-box;
+            background: #fff; z-index: 9999; padding: 30px; overflow-y: auto; box-sizing: border-box;
         }
 
-        .range-card { background: #f9f9f9; padding: 20px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #eee; }
-        input, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 12px; border: 1px solid #ddd; font-family: 'Kanit'; font-size: 1rem; box-sizing: border-box; }
-        .btn-prime { background: var(--primary-dark); color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-prime:hover { background: var(--accent-green); }
+        .pin-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 250px; margin: 30px auto;
+        }
+
+        .pin-btn {
+            height: 60px; border-radius: 50%; border: 1px solid #ddd; background: #f9f9f9;
+            font-size: 1.5rem; font-family: 'Kanit'; cursor: pointer;
+        }
+
+        .admin-section { background: #f9f9f9; padding: 15px; border-radius: 15px; margin-bottom: 20px; }
+        .btn-green { background: var(--primary-dark); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        
+        .admin-footer { text-align: center; font-size: 0.6rem; color: #ccc; cursor: pointer; padding: 10px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <div class="date-box">
-            <h2 id="thDate">-- --- ----</h2>
-            <p id="hijriDate">-- Ramadan 1447 AH</p>
+<div class="app-container">
+    <div class="top-bar">
+        <div class="header-info">
+            <h2 id="thDate">22 กุมภาพันธ์ 2569</h2>
+            <div class="city-label"><i class="fa-solid fa-location-dot"></i> <span id="currentCityLabel">ยะลา</span></div>
         </div>
-        <div style="font-size: 1.5rem; color: var(--primary-dark);"><i class="fa-regular fa-bell"></i></div>
+        <div class="time-now">
+            <span id="liveClock">00:00:00</span>
+            <i class="fa-regular fa-bell"></i>
+        </div>
     </div>
 
-    <div id="nextPrayerDisplay" class="highlight-card">
-        <div>
-            <p id="curName" class="p-label">Isha</p>
-            <div id="curTime" class="p-time">20:39</div>
-            <div id="countdown" class="p-status">เหลือเวลาอีก -- ชม. -- นาที</div>
+    <div class="main-card">
+        <div class="prayer-info-now">
+            <div class="now-badge">NOW</div>
+            <p id="nowNameAr" class="prayer-name-ar">عشاء</p>
+            <div id="nowTime" class="prayer-time-big">19:45</div>
+            <div class="countdown" id="countdown">เหลือเวลาอีก 2 ชม. 13 นาที</div>
         </div>
-        <div style="font-size: 3.5rem; color: #fbc02d;"><i id="curIcon" class="fa-solid fa-moon"></i></div>
+        <div class="moon-icon">
+            <i id="mainIcon" class="fa-solid fa-moon"></i>
+        </div>
     </div>
 
     <div class="prayer-grid" id="prayerGrid">
         </div>
 
-    <div class="selector-box">
-        <i class="fa-solid fa-location-dot" style="color: var(--primary-dark);"></i>
-        <select id="citySelect">
+    <div class="city-select-box">
+        <select id="citySelect" onchange="changeCity()">
             <option value="ยะลา">ยะลา</option>
             <option value="นครศรีธรรมราช">นครศรีธรรมราช / พัทลุง</option>
             <option value="จะนะ">จะนะ / เทพา</option>
@@ -154,134 +184,262 @@
         </select>
     </div>
 
-    <div style="text-align: center; color: #999; font-size: 0.8rem; padding: 0 40px;">ข้อมูลอ้างอิงตามตารางประกาศจังหวัดยะลา</div>
-    <div class="admin-trigger" id="adminBtn">ADMIN MODE</div>
+    <div class="bottom-calendar">
+        <div class="hijri-big" id="hijriBig">٤ رمضان ١٤٤٧</div>
+        <div class="gregorian-small" id="gregorianSmall">22 February 2026</div>
+    </div>
+
+    <div class="admin-footer" onclick="openAdmin()">ADMIN MODE</div>
 </div>
 
 <div id="adminModal" class="modal">
-    <div style="display:flex; justify-content: space-between; align-items: center;">
-        <h2 style="color: var(--primary-dark);">ตั้งค่าระบบแอดมิน</h2>
-        <span id="closeAdmin" style="font-size: 2rem; cursor: pointer;">&times;</span>
+    <div id="pinScreen">
+        <h2 style="text-align: center;">กรอก PIN 4 หลัก</h2>
+        <div style="text-align:center; font-size: 2rem; letter-spacing: 15px;" id="pinDots">____</div>
+        <div class="pin-grid">
+            <button class="pin-btn" onclick="pressPin('1')">1</button>
+            <button class="pin-btn" onclick="pressPin('2')">2</button>
+            <button class="pin-btn" onclick="pressPin('3')">3</button>
+            <button class="pin-btn" onclick="pressPin('4')">4</button>
+            <button class="pin-btn" onclick="pressPin('5')">5</button>
+            <button class="pin-btn" onclick="pressPin('6')">6</button>
+            <button class="pin-btn" onclick="pressPin('7')">7</button>
+            <button class="pin-btn" onclick="pressPin('8')">8</button>
+            <button class="pin-btn" onclick="pressPin('9')">9</button>
+            <button class="pin-btn" onclick="clearPin()">C</button>
+            <button class="pin-btn" onclick="pressPin('0')">0</button>
+            <button class="pin-btn" onclick="closeAdmin()">X</button>
+        </div>
     </div>
 
-    <div id="loginStep">
-        <input type="password" id="passCode" placeholder="รหัสผ่าน 17851902">
-        <button class="btn-prime" id="loginBtn">เข้าสู่ระบบ</button>
-    </div>
-
-    <div id="configStep" style="display:none;">
-        <div class="range-card">
-            <h4 style="margin-top:0;">1. ตั้งค่าช่วงวันที่ (ยะลา)</h4>
-            <label>ตั้งแต่วันที่:</label>
-            <input type="date" id="dateStart">
-            <label>ถึงวันที่:</label>
-            <input type="date" id="dateEnd">
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
-                <div><small>Fajr</small><input type="time" id="set-fajr"></div>
-                <div><small>Dhuhr</small><input type="time" id="set-dhuhr"></div>
-                <div><small>Asr</small><input type="time" id="set-asr"></div>
-                <div><small>Maghrib</small><input type="time" id="set-maghrib"></div>
-                <div><small>Isha</small><input type="time" id="set-isha"></div>
-            </div>
-            <button class="btn-prime" id="saveRangeBtn">บันทึกช่วงเวลานี้</button>
+    <div id="adminPanel" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>ตั้งค่าผู้ดูแลระบบ</h3>
+            <button onclick="closeAdmin()">ปิด</button>
         </div>
 
-        <div class="range-card">
-            <h4>2. ตั้งค่าวันแรกของรอมฎอน</h4>
-            <input type="date" id="ramadanDate">
-            <button class="btn-prime" id="saveRamadanBtn">อัปเดตปฏิทินอิสลาม</button>
+        <div class="admin-section">
+            <h4>1. เพิ่มช่วงเวลาละหมาด (ยะลา)</h4>
+            <label>เริ่มวันที่:</label> <input type="date" id="sDate">
+            <label>ถึงวันที่:</label> <input type="date" id="eDate">
+            <hr>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <input type="time" id="t-im" placeholder="إمساك"> 
+                <input type="time" id="t-fa" placeholder="صبح">
+                <input type="time" id="t-sh" placeholder="شروق">
+                <input type="time" id="t-dh" placeholder="ظهر">
+                <input type="time" id="t-as" placeholder="عصر">
+                <input type="time" id="t-ma" placeholder="مغرب">
+                <input type="time" id="t-is" placeholder="عشاء">
+            </div>
+            <button class="btn-green" onclick="saveRange()">+ เพิ่มช่วงเวลานี้</button>
+            <div id="rangeList" style="font-size: 0.7rem; margin-top:10px; max-height:100px; overflow:auto;"></div>
+        </div>
+
+        <div class="admin-section">
+            <h4>2. ตั้งค่าปฏิทินอิสลาม</h4>
+            <select id="hijriMonthSelect">
+                <option value="1">محرم</option><option value="2">صفر</option>
+                <option value="3">ربيع الأول</option><option value="4">ربيع الثاني</option>
+                <option value="5">جمادي الأول</option><option value="6">جمادي الآخر</option>
+                <option value="7">رجب</option><option value="8">شعبان</option>
+                <option value="9">رمضان</option><option value="10">شوال</option>
+                <option value="11">ذو القعدة</option><option value="12">ذو الحجة</option>
+            </select>
+            <label>วันที่ 1 ตรงกับสากลวันที่:</label>
+            <input type="date" id="hijriRefDate">
+            <label>เดือนนี้มีกี่วัน:</label>
+            <select id="hijriDays">
+                <option value="29">29 วัน</option>
+                <option value="30">30 วัน</option>
+            </select>
+            <button class="btn-green" onclick="saveHijri()">บันทึกปฏิทิน</button>
         </div>
     </div>
 </div>
 
 <script>
-    const PASS = "17851902";
-    const OFFSETS = { 'ยะลา': 0, 'นครศรีธรรมราช': 3, 'จะนะ': 1, 'สตูล': 2, 'ตรัง': 4, 'ปัตตานี': -2, 'นราธิวาส': -4, 'สุไหงโกลก': -5 };
-    const P_META = [
-        {id:'fajr', name:'Fajr', icon:'fa-sun-haze'},
-        {id:'dhuhr', name:'Dhuhr', icon:'fa-sun'},
-        {id:'asr', name:'Asr', icon:'fa-cloud-sun'},
-        {id:'maghrib', name:'Maghrib', icon:'fa-moon-stars'},
-        {id:'isha', name:'Isha', icon:'fa-moon'}
+    // Configuration & Data
+    const PIN_REQUIRED = "1785";
+    let currentPin = "";
+    
+    // Database (Local Storage)
+    let db = JSON.parse(localStorage.getItem('prayerAppDB')) || {
+        ranges: [], // {start: 'date', end: 'date', times: {}}
+        hijri: { month: 9, refDate: '2026-03-01', totalDays: 30 }
+    };
+
+    const offsets = { 'ยะลา': 0, 'นครศรีธรรมราช': 3, 'จะนะ': 1, 'สตูล': 2, 'ตรัง': 4, 'ปัตตานี': -2, 'นราธิวาส': -4, 'สุไหงโกลก': -5 };
+    const prayerMeta = [
+        {id:'im', ar:'إمساك', icon:'fa-clock'},
+        {id:'fa', ar:'صبح', icon:'fa-sun-haze'},
+        {id:'sh', ar:'شروق', icon:'fa-sun-rising'},
+        {id:'dh', ar:'ظهر', icon:'fa-sun'},
+        {id:'as', ar:'عصر', icon:'fa-cloud-sun'},
+        {id:'ma', ar:'مغرب', icon:'fa-moon-stars'},
+        {id:'is', ar:'عشاء', icon:'fa-moon'}
     ];
 
-    let db = JSON.parse(localStorage.getItem('prayerDB')) || { ranges: [], ramadanStart: "2026-03-01" };
+    const arNumbers = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+    const arMonths = ["","محرم","صفر","ربيع الأول","ربيع الثاني","جمادي الأول","جمادي الآخر","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
 
+    // App Logic
     function init() {
-        renderAll();
-        // Event Listeners
-        document.getElementById('adminBtn').onclick = () => document.getElementById('adminModal').style.display = 'block';
-        document.getElementById('closeAdmin').onclick = () => document.getElementById('adminModal').style.display = 'none';
-        document.getElementById('loginBtn').onclick = handleLogin;
-        document.getElementById('saveRangeBtn').onclick = saveRange;
-        document.getElementById('saveRamadanBtn').onclick = saveRamadan;
-        document.getElementById('citySelect').onchange = renderAll;
-        setInterval(renderAll, 60000); // อัปเดตทุกนาที
+        const savedCity = localStorage.getItem('pinnedCity') || 'ยะลา';
+        document.getElementById('citySelect').value = savedCity;
+        document.getElementById('currentCityLabel').innerText = savedCity;
+        
+        updateClock();
+        setInterval(updateClock, 1000);
+        renderView();
     }
 
-    function renderAll() {
-        const today = new Date();
-        const dateStr = today.toISOString().split('T')[0];
-        const city = document.getElementById('citySelect').value;
-        const offset = OFFSETS[city];
-
-        // 1. วันที่
-        document.getElementById('thDate').innerText = today.toLocaleDateString('th-TH', {day:'numeric', month:'long', year:'numeric'});
+    function updateClock() {
+        const now = new Date();
+        document.getElementById('liveClock').innerText = now.toLocaleTimeString('th-TH');
+        document.getElementById('thDate').innerText = now.toLocaleDateString('th-TH', {day:'numeric', month:'long', year:'numeric'});
+        document.getElementById('gregorianSmall').innerText = now.toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
         
-        // 2. ปฏิทินรอมฎอน
-        const rStart = new Date(db.ramadanStart);
-        const diff = Math.floor((today - rStart) / (1000*60*60*24));
-        document.getElementById('hijriDate').innerText = (diff >= 0 && diff < 30) ? `${diff+1} Ramadan 1447 AH` : "Rabi' al-awwal 27 - 1447 AH";
+        if(now.getSeconds() === 0) renderView(); // Re-render every minute for "Now" logic
+    }
 
-        // 3. หาเวลาละหมาดจากช่วงวันที่
-        let times = db.ranges.find(r => dateStr >= r.start && dateStr <= r.end) || {fajr:"05:10", dhuhr:"12:30", asr:"15:45", maghrib:"18:35", isha:"19:45"};
+    function renderView() {
+        const today = new Date().toISOString().split('T')[0];
+        const city = document.getElementById('citySelect').value;
+        const offset = offsets[city];
+        
+        // Find matching range
+        let activeRange = db.ranges.find(r => today >= r.start && today <= r.end);
+        let times = activeRange ? activeRange.times : {im:'04:55', fa:'05:10', sh:'06:28', dh:'12:30', as:'15:45', ma:'18:35', is:'19:45'};
 
-        // 4. แสดงผลตาราง 4 ช่องล่าง (ตามรูปที่ 2)
-        const grid = document.getElementById('prayerGrid');
-        grid.innerHTML = '';
-        P_META.slice(0,4).forEach(p => {
-            grid.innerHTML += `<div class="prayer-item"><i class="fa-solid ${p.icon}"></i><span class="p-name">${p.name}</span><span class="p-val">${addMin(times[p.id], offset)}</span></div>`;
+        // 1. Calculate Current "Now" Prayer
+        const now = new Date();
+        const currentTimeInMin = now.getHours() * 60 + now.getMinutes();
+        
+        let currentPrayerIdx = 0;
+        const processedTimes = prayerMeta.map(p => {
+            const [h, m] = times[p.id].split(':').map(Number);
+            const totalMin = h * 60 + m + offset;
+            return { ...p, totalMin, timeStr: formatTime(totalMin) };
         });
 
-        // 5. แสดงผลตัวบน (Next/Current)
-        document.getElementById('curName').innerText = "Isha";
-        document.getElementById('curTime').innerText = addMin(times.isha, offset);
+        for(let i = processedTimes.length - 1; i >= 0; i--) {
+            if(currentTimeInMin >= processedTimes[i].totalMin) {
+                currentPrayerIdx = i;
+                break;
+            }
+        }
+
+        // 2. Update Header Card
+        const cur = processedTimes[currentPrayerIdx];
+        document.getElementById('nowNameAr').innerText = cur.ar;
+        document.getElementById('nowTime').innerText = cur.timeStr;
+        
+        // 3. Update Grid (4 items - according to UI style)
+        // Show next 4 or specific ones. Let's show Fa, Dh, As, Ma in grid.
+        const gridIds = ['fa', 'dh', 'as', 'ma'];
+        const grid = document.getElementById('prayerGrid');
+        grid.innerHTML = '';
+        gridIds.forEach(id => {
+            const p = processedTimes.find(x => x.id === id);
+            const isActive = (cur.id === id);
+            grid.innerHTML += `
+                <div class="grid-item ${isActive ? 'active' : ''}">
+                    <i class="fa-solid ${getIcon(id)}"></i>
+                    <span class="ar-label">${p.ar}</span>
+                    <span class="time-label">${p.timeStr}</span>
+                </div>
+            `;
+        });
+
+        // 4. Update Hijri
+        const refDate = new Date(db.hijri.refDate);
+        const dayDiff = Math.floor((new Date() - refDate) / (1000*60*60*24)) + 1;
+        if(dayDiff > 0 && dayDiff <= db.hijri.totalDays) {
+            const arDay = String(dayDiff).split('').map(n => arNumbers[n]).join('');
+            document.getElementById('hijriBig').innerText = `${arDay} ${arMonths[db.hijri.month]} ١٤٤٧`;
+        }
     }
 
-    function addMin(t, m) {
-        let [hh, mm] = t.split(':').map(Number);
-        let d = new Date(); d.setHours(hh, mm + m);
-        return d.toLocaleTimeString('th-TH', {hour:'2-digit', minute:'2-digit', hour12:false});
+    function formatTime(totalMin) {
+        const h = Math.floor(totalMin / 60);
+        const m = totalMin % 60;
+        return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
     }
 
-    function handleLogin() {
-        if(document.getElementById('passCode').value === PASS) {
-            document.getElementById('loginStep').style.display = 'none';
-            document.getElementById('configStep').style.display = 'block';
-        } else { alert("รหัสผ่านไม่ถูกต้อง"); }
+    function getIcon(id) {
+        const icons = {fa:'fa-sun-haze', dh:'fa-sun', as:'fa-cloud-sun', ma:'fa-moon-stars'};
+        return icons[id] || 'fa-clock';
     }
+
+    function changeCity() {
+        const city = document.getElementById('citySelect').value;
+        localStorage.setItem('pinnedCity', city);
+        document.getElementById('currentCityLabel').innerText = city;
+        renderView();
+    }
+
+    // Admin Functions
+    function openAdmin() { document.getElementById('adminModal').style.display = 'block'; }
+    function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; clearPin(); }
+
+    function pressPin(n) {
+        if(currentPin.length < 4) {
+            currentPin += n;
+            document.getElementById('pinDots').innerText = '*'.repeat(currentPin.length).padEnd(4, '_');
+        }
+        if(currentPin === PIN_REQUIRED) {
+            document.getElementById('pinScreen').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            renderRangeList();
+        } else if(currentPin.length === 4) {
+            alert("PIN ผิด"); clearPin();
+        }
+    }
+
+    function clearPin() { currentPin = ""; document.getElementById('pinDots').innerText = "____"; }
 
     function saveRange() {
-        const newR = {
-            start: document.getElementById('dateStart').value,
-            end: document.getElementById('dateEnd').value,
-            fajr: document.getElementById('set-fajr').value,
-            dhuhr: document.getElementById('set-dhuhr').value,
-            asr: document.getElementById('set-asr').value,
-            maghrib: document.getElementById('set-maghrib').value,
-            isha: document.getElementById('set-isha').value
+        const range = {
+            start: document.getElementById('sDate').value,
+            end: document.getElementById('eDate').value,
+            times: {
+                im: document.getElementById('t-im').value,
+                fa: document.getElementById('t-fa').value,
+                sh: document.getElementById('t-sh').value,
+                dh: document.getElementById('t-dh').value,
+                as: document.getElementById('t-as').value,
+                ma: document.getElementById('t-ma').value,
+                is: document.getElementById('t-is').value
+            }
         };
-        db.ranges.push(newR);
-        localStorage.setItem('prayerDB', JSON.stringify(db));
-        alert("บันทึกสำเร็จ!");
-        renderAll();
+        db.ranges.push(range);
+        localStorage.setItem('prayerAppDB', JSON.stringify(db));
+        renderRangeList();
+        alert("บันทึกช่วงเวลาแล้ว");
+        renderView();
     }
 
-    function saveRamadan() {
-        db.ramadanStart = document.getElementById('ramadanDate').value;
-        localStorage.setItem('prayerDB', JSON.stringify(db));
-        alert("อัปเดตปฏิทินรอมฎอนแล้ว");
-        renderAll();
+    function renderRangeList() {
+        const list = document.getElementById('rangeList');
+        list.innerHTML = db.ranges.map((r, i) => `<div>[${i+1}] ${r.start} - ${r.end} <span onclick="deleteRange(${i})" style="color:red">ลบ</span></div>`).join('');
+    }
+    
+    function deleteRange(i) {
+        db.ranges.splice(i, 1);
+        localStorage.setItem('prayerAppDB', JSON.stringify(db));
+        renderRangeList();
+    }
+
+    function saveHijri() {
+        db.hijri = {
+            month: parseInt(document.getElementById('hijriMonthSelect').value),
+            refDate: document.getElementById('hijriRefDate').value,
+            totalDays: parseInt(document.getElementById('hijriDays').value)
+        };
+        localStorage.setItem('prayerAppDB', JSON.stringify(db));
+        alert("บันทึกปฏิทินแล้ว");
+        renderView();
     }
 
     window.onload = init;
